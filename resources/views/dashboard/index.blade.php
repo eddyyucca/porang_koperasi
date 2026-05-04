@@ -205,59 +205,6 @@
     </div>
 </div>
 
-{{-- Info Porang --}}
-<div class="row">
-    <div class="col-12 mb-3">
-        <div class="card shadow-sm border-left-success">
-            <div class="card-header bg-white">
-                <h3 class="card-title text-success"><i class="fas fa-leaf me-2"></i> Tentang Tanaman Porang</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="text-center p-3 bg-light rounded">
-                            <i class="fas fa-flask fa-2x text-success mb-2"></i>
-                            <h6 class="font-weight-bold">Nama Ilmiah</h6>
-                            <p class="text-muted mb-0"><em>Amorphophallus muelleri</em></p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="text-center p-3 bg-light rounded">
-                            <i class="fas fa-clock fa-2x text-warning mb-2"></i>
-                            <h6 class="font-weight-bold">Umur Panen</h6>
-                            <p class="text-muted mb-0">18–24 bulan (perdana)</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="text-center p-3 bg-light rounded">
-                            <i class="fas fa-weight-hanging fa-2x text-info mb-2"></i>
-                            <h6 class="font-weight-bold">Hasil per Tanaman</h6>
-                            <p class="text-muted mb-0">0,5 – 3 kg umbi</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="text-center p-3 bg-light rounded">
-                            <i class="fas fa-money-bill-wave fa-2x text-success mb-2"></i>
-                            <h6 class="font-weight-bold">Harga Pasar</h6>
-                            <p class="text-muted mb-0">Rp 3.000 – 8.000/kg (basah)</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-md-6">
-                        <h6 class="font-weight-bold"><i class="fas fa-calendar-alt text-primary me-1"></i> Waktu Tanam Optimal</h6>
-                        <p class="text-muted">Awal musim hujan: Oktober – November. Sumber bibit: katak/bulbil, umbi, atau biji.</p>
-                    </div>
-                    <div class="col-md-6">
-                        <h6 class="font-weight-bold"><i class="fas fa-star text-warning me-1"></i> Kandungan Utama</h6>
-                        <p class="text-muted">Glucomannan tinggi — digunakan untuk industri makanan, farmasi, dan produk ekspor ke Jepang & China.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @push('scripts')

@@ -26,22 +26,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/koperasi/edit', [KoperasiController::class, 'edit'])->name('koperasi.edit');
     Route::put('/koperasi', [KoperasiController::class, 'update'])->name('koperasi.update');
 
-    // BUMDes
-    Route::resource('bumdes', BumdesController::class);
+    // BUMDes — parameter eksplisit supaya route model binding cocok
+    Route::resource('bumdes', BumdesController::class)
+        ->parameters(['bumdes' => 'bumdes']);
 
-    // Anggota/Petani
-    Route::resource('anggota', AnggotaController::class);
-    Route::patch('/anggota/{anggota}/approve', [AnggotaController::class, 'approve'])->name('anggota.approve');
+    // Anggota/Petani — parameter eksplisit
+    Route::resource('anggota', AnggotaController::class)
+        ->parameters(['anggota' => 'anggota']);
+    Route::patch('/anggota/{anggota}/approve', [AnggotaController::class, 'approve'])
+        ->name('anggota.approve');
 
     // Lahan
     Route::resource('lahan', LahanController::class);
 
     // Tanaman
     Route::resource('tanaman', TanamanController::class);
-    Route::get('/api/anggota/{anggota}/lahan', [TanamanController::class, 'getLahanByAnggota'])->name('api.anggota.lahan');
+    Route::get('/api/anggota/{anggota}/lahan', [TanamanController::class, 'getLahanByAnggota'])
+        ->name('api.anggota.lahan');
 
     // Panen
     Route::resource('panen', PanenController::class);
-    Route::get('/api/anggota/{anggota}/tanaman', [PanenController::class, 'getTanamanByAnggota'])->name('api.anggota.tanaman');
+    Route::get('/api/anggota/{anggota}/tanaman', [PanenController::class, 'getTanamanByAnggota'])
+        ->name('api.anggota.tanaman');
 
 });
