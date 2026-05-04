@@ -85,8 +85,11 @@
                         <td><code>{{ $a->nik }}</code></td>
                         <td>
                             <span class="badge badge-{{ $a->jenis_anggota === 'bumdes' ? 'info' : 'secondary' }}">
-                                {{ strtoupper($a->jenis_anggota) }}
+                                {{ $a->jenis_anggota === 'bumdes' ? 'BUMDes' : 'Pribadi' }}
                             </span>
+                            @if($a->jenis_anggota === 'bumdes' && $a->bumdes)
+                                <div><small class="text-muted">{{ $a->bumdes->nama }}</small></div>
+                            @endif
                         </td>
                         <td>
                             <small>{{ implode(', ', array_filter([$a->kecamatan_ktp, $a->kabupaten_ktp])) ?: '-' }}</small>

@@ -15,6 +15,10 @@
     <div class="card-body p-0">
         <div id="map-lahan" style="height:300px;"></div>
     </div>
+    <div class="card-footer bg-white text-sm">
+        <span class="badge badge-light border mr-2"><i class="fas fa-circle text-success mr-1"></i>Lahan pribadi petani</span>
+        <span class="badge badge-light border"><i class="fas fa-circle text-primary mr-1"></i>Lahan anggota BUMDes</span>
+    </div>
 </div>
 
 <div class="card">
@@ -65,7 +69,12 @@
                     @forelse($lahan as $item)
                         <tr>
                             <td>{{ $item->nama_lahan }}</td>
-                            <td>{{ $item->anggota->nama_lengkap ?? '-' }}</td>
+                            <td>
+                                {{ $item->anggota->nama_lengkap ?? '-' }}
+                                @if(optional($item->anggota)->jenis_anggota === 'bumdes' && optional($item->anggota->bumdes)->nama)
+                                    <div><small class="text-muted">{{ $item->anggota->bumdes->nama }}</small></div>
+                                @endif
+                            </td>
                             <td>{{ number_format($item->luas_lahan, 2, ',', '.') }} {{ $item->satuan_luas }}</td>
                             <td>{{ $item->desa_nama ?: '-' }}</td>
                             <td>{{ $item->kabupaten_nama ?: '-' }}</td>
@@ -110,24 +119,27 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
 }).addTo(lahanMap);
 
-const iconLahan = L.divIcon({
-    html: '<i class="fas fa-map-marker-alt" style="color:#2e7d32;font-size:24px;"></i>',
-    iconSize: [24, 32],
-    iconAnchor: [12, 32],
-    className: 'leaflet-div-icon-clean'
-});
-
 const bounds = [];
 lahanMapData.forEach(function(item) {
     if (!item.latitude || !item.longitude) {
         return;
     }
 
-    const marker = L.marker([item.latitude, item.longitude], { icon: iconLahan }).addTo(lahanMap);
+    const isBumdes = item.anggota && item.anggota.jenis_anggota === 'bumdes';
+    const marker = L.circleMarker([item.latitude, item.longitude], {
+        radius: isBumdes ? 10 : 8,
+        color: isBumdes ? '#0d6efd' : '#2e7d32',
+        weight: 2,
+        fillColor: isBumdes ? '#5aa2ff' : '#6cc070',
+        fillOpacity: 0.9
+    }).addTo(lahanMap);
     bounds.push([item.latitude, item.longitude]);
     marker.bindPopup(
         '<strong>' + item.nama_lahan + '</strong><br>' +
         'Petani: ' + (item.anggota ? item.anggota.nama_lengkap : '-') + '<br>' +
+        'Jenis: ' + (isBumdes ? 'BUMDes' : 'Pribadi') + '<br>' +
+        (isBumdes && item.anggota && item.anggota.bumdes ? 'BUMDes: ' + item.anggota.bumdes.nama + '<br>' : '') +
+        'Kabupaten: ' + (item.kabupaten_nama || '-') + '<br>' +
         'Luas: ' + Number(item.luas_lahan).toLocaleString('id-ID') + ' ' + item.satuan_luas + '<br>' +
         '<a href="' + lahanShowBaseUrl + '/' + item.id + '" class="btn btn-xs btn-success mt-2">Detail</a>'
     );

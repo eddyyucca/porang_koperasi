@@ -11,7 +11,10 @@ class LahanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Lahan::with('anggota:id,nama_lengkap,nomor_anggota');
+        $query = Lahan::with([
+            'anggota:id,nama_lengkap,nomor_anggota,jenis_anggota,bumdes_id',
+            'anggota.bumdes:id,nama',
+        ]);
 
         if ($request->filled('search')) {
             $s = $request->search;
@@ -37,8 +40,11 @@ class LahanController extends Controller
         $lahanPeta = Lahan::whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->where('aktif', true)
-            ->with('anggota:id,nama_lengkap')
-            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'desa_nama', 'status_kepemilikan')
+            ->with([
+                'anggota:id,nama_lengkap,jenis_anggota,bumdes_id',
+                'anggota.bumdes:id,nama',
+            ])
+            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'desa_nama', 'kabupaten_nama', 'status_kepemilikan')
             ->get();
 
         return view('lahan.index', compact('lahan', 'lahanPeta'));

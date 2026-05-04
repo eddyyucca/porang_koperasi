@@ -7,6 +7,7 @@ use App\Models\Bumdes;
 use App\Models\Koperasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class AnggotaController extends Controller
 {
@@ -50,9 +51,7 @@ class AnggotaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate($this->rules());
-
-        $data = $request->except(['foto_ktp', 'foto_diri']);
+        $data = $this->validatedData($request);
         $data['nomor_anggota'] = Anggota::generateNomorAnggota();
 
         if ($request->hasFile('foto_ktp')) {
@@ -83,10 +82,7 @@ class AnggotaController extends Controller
 
     public function update(Request $request, Anggota $anggota)
     {
-        $rules = $this->rules($anggota->id);
-        $request->validate($rules);
-
-        $data = $request->except(['foto_ktp', 'foto_diri']);
+        $data = $this->validatedData($request, $anggota->id);
 
         if ($request->hasFile('foto_ktp')) {
             if ($anggota->foto_ktp) Storage::disk('public')->delete($anggota->foto_ktp);
@@ -118,20 +114,54 @@ class AnggotaController extends Controller
         return back()->with('success', 'Anggota telah diaktifkan.');
     }
 
+    private function validatedData(Request $request, ?int $ignoreId = null): array
+    {
+        $data = $request->validate($this->rules($ignoreId));
+
+        if (($data['jenis_anggota'] ?? null) !== 'bumdes') {
+            $data['bumdes_id'] = null;
+        }
+
+        return $data;
+    }
+
     private function rules(?int $ignoreId = null): array
     {
         return [
-            'nik'            => 'required|digits:16|unique:anggota,nik' . ($ignoreId ? ",$ignoreId" : ''),
-            'nama_lengkap'   => 'required|string|max:100',
-            'tempat_lahir'   => 'required|string|max:50',
-            'tanggal_lahir'  => 'required|date',
-            'jenis_kelamin'  => 'required|in:L,P',
-            'agama'          => 'required',
-            'alamat_ktp'     => 'required|string',
-            'jenis_anggota'  => 'required|in:personal,bumdes',
-            'tanggal_daftar' => 'required|date',
-            'foto_ktp'       => 'nullable|image|max:2048',
-            'foto_diri'      => 'nullable|image|max:2048',
+            'nik'                => ['required', 'digits:16', Rule::unique('anggota', 'nik')->ignore($ignoreId)],
+            'nama_lengkap'       => 'required|string|max:100',
+            'tempat_lahir'       => 'required|string|max:50',
+            'tanggal_lahir'      => 'required|date',
+            'jenis_kelamin'      => 'required|in:L,P',
+            'golongan_darah'     => 'nullable|in:-,A,B,AB,O',
+            'agama'              => 'required|in:Islam,Kristen,Katolik,Hindu,Buddha,Konghucu',
+            'status_perkawinan'  => 'nullable|in:Belum Kawin,Kawin,Cerai Hidup,Cerai Mati',
+            'pendidikan'         => 'nullable|string|max:50',
+            'pekerjaan_ktp'      => 'nullable|string|max:100',
+            'alamat_ktp'         => 'required|string',
+            'rt_ktp'             => 'nullable|string|max:5',
+            'rw_ktp'             => 'nullable|string|max:5',
+            'desa_id_ktp'        => 'nullable|string|max:15',
+            'desa_ktp'           => 'nullable|string|max:100',
+            'kecamatan_id_ktp'   => 'nullable|string|max:15',
+            'kecamatan_ktp'      => 'nullable|string|max:100',
+            'kabupaten_id_ktp'   => 'nullable|string|max:15',
+            'kabupaten_ktp'      => 'nullable|string|max:100',
+            'provinsi_id_ktp'    => 'nullable|string|max:15',
+            'provinsi_ktp'       => 'nullable|string|max:100',
+            'kode_pos_ktp'       => 'nullable|string|max:10',
+            'telepon'            => 'nullable|string|max:20',
+            'email'              => 'nullable|email|max:100',
+            'jenis_anggota'      => 'required|in:personal,bumdes',
+            'bumdes_id'          => 'nullable|required_if:jenis_anggota,bumdes|exists:bumdes,id',
+            'koperasi_id'        => 'nullable|exists:koperasi,id',
+            'tanggal_daftar'     => 'required|date',
+            'status'             => 'nullable|in:aktif,non-aktif,pending',
+            'no_rekening'        => 'nullable|string|max:50',
+            'nama_bank'          => 'nullable|string|max:100',
+            'catatan'            => 'nullable|string',
+            'foto_ktp'           => 'nullable|image|max:2048',
+            'foto_diri'          => 'nullable|image|max:2048',
         ];
     }
 }

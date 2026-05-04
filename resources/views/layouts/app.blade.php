@@ -25,17 +25,90 @@
             --porang-green: #2e7d32;
             --porang-light: #4caf50;
             --porang-dark:  #1b5e20;
+            --porang-sidebar: #18263f;
+            --porang-sidebar-soft: #223454;
+            --porang-border: rgba(255,255,255,0.08);
         }
-        .main-header { background: var(--porang-green) !important; }
-        .main-header .navbar-nav .nav-link { color: #fff !important; }
-        .main-sidebar { background: #1a2744 !important; }
-        .main-sidebar .nav-link { color: #c8d3e8 !important; }
+        body { font-size: 0.95rem; }
+        .main-header {
+            background: linear-gradient(90deg, var(--porang-dark), var(--porang-green)) !important;
+            border-bottom: 0;
+            box-shadow: 0 6px 18px rgba(27, 94, 32, 0.18);
+        }
+        .main-header .navbar-nav .nav-link {
+            color: #fff !important;
+            border-radius: 10px;
+            padding: 0.55rem 0.8rem;
+        }
+        .main-header .navbar-nav .nav-link:hover {
+            background: rgba(255,255,255,0.12);
+        }
+        .main-sidebar {
+            background: linear-gradient(180deg, var(--porang-sidebar) 0%, #101b2f 100%) !important;
+            box-shadow: 6px 0 20px rgba(0,0,0,0.12);
+        }
+        .main-sidebar .nav-link {
+            color: #d6e2f2 !important;
+            border-radius: 12px;
+            margin: 0.15rem 0.75rem;
+            padding: 0.75rem 0.9rem;
+            transition: all 0.2s ease;
+        }
         .main-sidebar .nav-link:hover,
-        .main-sidebar .nav-link.active { color: #fff !important; background: rgba(255,255,255,0.1) !important; }
-        .main-sidebar .brand-link { background: var(--porang-dark) !important; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .main-sidebar .nav-link.active {
+            color: #fff !important;
+            background: linear-gradient(90deg, rgba(76,175,80,0.32), rgba(76,175,80,0.18)) !important;
+            box-shadow: inset 0 0 0 1px rgba(129,199,132,0.18);
+        }
+        .main-sidebar .nav-link .nav-icon {
+            width: 1.35rem;
+            text-align: center;
+            margin-right: 0.35rem;
+        }
+        .main-sidebar .brand-link {
+            background: rgba(14, 24, 42, 0.65) !important;
+            border-bottom: 1px solid var(--porang-border);
+            height: 64px;
+            display: flex;
+            align-items: center;
+        }
         .brand-text { color: #fff !important; font-weight: 700 !important; }
-        .sidebar-mini .main-sidebar .brand-text { display: none; }
+        .brand-image {
+            margin: 0 0.85rem 0 1rem !important;
+        }
+        .sidebar-mini.sidebar-collapse .main-sidebar .brand-text {
+            display: none;
+        }
+        .sidebar {
+            padding-bottom: 1rem;
+        }
+        .user-panel {
+            margin: 1rem 0.85rem 0.75rem !important;
+            padding: 0.9rem 0.95rem !important;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.05);
+            border-bottom: 0 !important;
+        }
+        .user-panel .image {
+            width: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .user-panel .info {
+            padding-left: 0.75rem !important;
+        }
+        .nav-sidebar .nav-header {
+            font-size: 0.68rem !important;
+            letter-spacing: 0.08em;
+            color: #7f93b7 !important;
+            padding: 1rem 1.5rem 0.45rem !important;
+        }
         .nav-sidebar .nav-treeview > .nav-item > .nav-link { padding-left: 2.5rem !important; }
+        .nav-sidebar .badge.right {
+            right: 0.85rem;
+            top: 0.9rem;
+        }
 
         /* Badge status */
         .badge-aktif    { background: #28a745; }
@@ -49,6 +122,35 @@
         #map-dashboard { height: 420px; border-radius: 8px; }
         #map-lahan { height: 380px; border-radius: 8px; }
         #map-picker { height: 320px; border-radius: 8px; }
+        .chart-box {
+            position: relative;
+            min-height: 320px;
+        }
+        .chart-box.chart-box-sm {
+            min-height: 280px;
+        }
+        .chart-empty {
+            min-height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #6c757d;
+            border: 1px dashed #d7dee7;
+            border-radius: 12px;
+            background: linear-gradient(180deg, #fbfcfd 0%, #f3f6f9 100%);
+            padding: 1rem;
+        }
+        .dashboard-table-card .card-header,
+        .dashboard-chart-card .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dashboard-table-card .card-title,
+        .dashboard-chart-card .card-title {
+            margin-bottom: 0;
+        }
 
         /* Info boxes */
         .info-box .info-box-icon { background: rgba(0,0,0,0.15); }
@@ -62,10 +164,47 @@
         @media (max-width: 576px) {
             .card-body { padding: 0.75rem; }
             .info-box-number { font-size: 1.2rem !important; }
+            .main-sidebar .nav-link {
+                margin-left: 0.5rem;
+                margin-right: 0.5rem;
+            }
+            .user-panel {
+                margin-left: 0.5rem !important;
+                margin-right: 0.5rem !important;
+            }
         }
 
         .content-wrapper { background: #f4f6f9; }
-        .card { box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: none; }
+        .content-header {
+            padding-top: 1rem;
+        }
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin-bottom: 0;
+        }
+        .breadcrumb-item + .breadcrumb-item::before {
+            color: #9aa5b1;
+        }
+        .card {
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .card-header-porang {
+            padding: 0.95rem 1.15rem;
+        }
+        .table thead th {
+            border-bottom: 0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #5f6b7a;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
     </style>
     @stack('styles')
 </head>
@@ -138,7 +277,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-header text-uppercase" style="font-size:0.65rem; color:#6c7a9c; padding-top:10px;">Data Koperasi</li>
+                    <li class="nav-header text-uppercase">Data Koperasi</li>
 
                     <li class="nav-item">
                         <a href="{{ route('koperasi.index') }}" class="nav-link {{ request()->routeIs('koperasi.*') ? 'active' : '' }}">
@@ -165,7 +304,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-header text-uppercase" style="font-size:0.65rem; color:#6c7a9c; padding-top:10px;">Data Pertanian</li>
+                    <li class="nav-header text-uppercase">Data Pertanian</li>
 
                     <li class="nav-item">
                         <a href="{{ route('lahan.index') }}" class="nav-link {{ request()->routeIs('lahan.*') ? 'active' : '' }}">
@@ -188,7 +327,7 @@
                         </a>
                     </li>
 
-                    <li class="nav-header text-uppercase" style="font-size:0.65rem; color:#6c7a9c; padding-top:10px;">Sistem</li>
+                    <li class="nav-header text-uppercase">Sistem</li>
 
                     <li class="nav-item">
                         <a href="{{ route('dashboard') }}#peta" class="nav-link">

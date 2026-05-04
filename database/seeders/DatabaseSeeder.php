@@ -54,5 +54,7 @@ class DatabaseSeeder extends Seeder
                 'aktif'             => true,
             ]
         );
+
+        $this->call(TapinDummySeeder::class);
     }
 }

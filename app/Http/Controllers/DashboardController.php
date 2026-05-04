@@ -58,11 +58,14 @@ class DashboardController extends Controller
             ->get();
 
         // Data lahan dengan koordinat untuk peta
-        $lahanPeta = Lahan::with('anggota:id,nama_lengkap')
+        $lahanPeta = Lahan::with([
+                'anggota:id,nama_lengkap,jenis_anggota,bumdes_id',
+                'anggota.bumdes:id,nama',
+            ])
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->where('aktif', true)
-            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'desa_nama', 'kabupaten_nama')
+            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'desa_nama', 'kabupaten_nama', 'status_kepemilikan')
             ->get();
 
         // Anggota terbaru

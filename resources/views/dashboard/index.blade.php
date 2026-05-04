@@ -7,10 +7,12 @@
 @endsection
 
 @section('content')
+@php
+    $dashboardLahanUrl = url('/lahan');
+@endphp
 
-{{-- Statistik Utama --}}
 <div class="row">
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+    <div class="col-xl-3 col-md-6 col-12 mb-3">
         <div class="info-box info-box-green shadow-sm">
             <span class="info-box-icon"><i class="fas fa-users"></i></span>
             <div class="info-box-content">
@@ -18,25 +20,25 @@
                 <span class="info-box-number">{{ number_format($stats['total_anggota']) }}</span>
                 @if($stats['pending'] > 0)
                     <span class="progress-description">
-                        <a href="{{ route('anggota.index', ['status'=>'pending']) }}" class="text-white">
-                            <i class="fas fa-clock"></i> {{ $stats['pending'] }} menunggu approval
+                        <a href="{{ route('anggota.index', ['status' => 'pending']) }}" class="text-white">
+                            <i class="fas fa-clock mr-1"></i>{{ $stats['pending'] }} menunggu approval
                         </a>
                     </span>
                 @endif
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+    <div class="col-xl-3 col-md-6 col-12 mb-3">
         <div class="info-box info-box-blue shadow-sm">
             <span class="info-box-icon"><i class="fas fa-map-marked-alt"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Total Lahan</span>
                 <span class="info-box-number">{{ number_format($stats['total_lahan']) }} petak</span>
-                <span class="progress-description">{{ number_format($stats['luas_total_ha'], 2) }} Ha total</span>
+                <span class="progress-description">{{ number_format($stats['luas_total_ha'], 2, ',', '.') }} Ha total</span>
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+    <div class="col-xl-3 col-md-6 col-12 mb-3">
         <div class="info-box info-box-orange shadow-sm">
             <span class="info-box-icon"><i class="fas fa-seedling"></i></span>
             <div class="info-box-content">
@@ -46,100 +48,104 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-3">
+    <div class="col-xl-3 col-md-6 col-12 mb-3">
         <div class="info-box info-box-purple shadow-sm">
             <span class="info-box-icon"><i class="fas fa-shopping-basket"></i></span>
             <div class="info-box-content">
                 <span class="info-box-text">Total Panen</span>
-                <span class="info-box-number">{{ number_format($stats['total_panen_kg'], 0) }} Kg</span>
+                <span class="info-box-number">{{ number_format($stats['total_panen_kg'], 0, ',', '.') }} Kg</span>
                 <span class="progress-description">Rp {{ number_format($stats['nilai_panen'], 0, ',', '.') }}</span>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Peta GIS --}}
 <div class="row" id="peta">
     <div class="col-12 mb-3">
         <div class="card shadow-sm">
             <div class="card-header card-header-porang d-flex justify-content-between align-items-center">
-                <h3 class="card-title"><i class="fas fa-globe-asia me-2"></i> Peta Sebaran Lahan Petani</h3>
-                <div>
-                    <span class="badge badge-light text-dark">
-                        <i class="fas fa-map-marker-alt text-danger"></i>
-                        {{ $lahanPeta->count() }} titik lahan
-                    </span>
-                </div>
+                <h3 class="card-title mb-0"><i class="fas fa-globe-asia mr-2"></i>Peta Sebaran Lahan Petani</h3>
+                <span class="badge badge-light text-dark">
+                    <i class="fas fa-map-marker-alt text-danger mr-1"></i>{{ $lahanPeta->count() }} titik lahan
+                </span>
             </div>
             <div class="card-body p-0">
                 <div id="map-dashboard"></div>
             </div>
             <div class="card-footer text-sm text-muted">
-                <i class="fas fa-info-circle"></i> Klik marker untuk detail lahan. Data lahan tanpa koordinat tidak ditampilkan di peta.
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="mb-1 mb-md-0">
+                        <i class="fas fa-info-circle mr-1"></i>Klik marker untuk melihat detail lahan. Data tanpa koordinat tidak ditampilkan.
+                    </div>
+                    <div>
+                        <span class="badge badge-light border mr-2"><i class="fas fa-circle text-success mr-1"></i>Lahan pribadi</span>
+                        <span class="badge badge-light border"><i class="fas fa-circle text-primary mr-1"></i>Lahan anggota BUMDes</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Chart Row --}}
 <div class="row">
-    {{-- Panen Bulanan --}}
     <div class="col-lg-8 col-12 mb-3">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm dashboard-chart-card h-100">
             <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-chart-line me-2"></i> Produksi Panen 12 Bulan Terakhir</h3>
+                <h3 class="card-title"><i class="fas fa-chart-line mr-2"></i>Produksi Panen 12 Bulan Terakhir</h3>
             </div>
             <div class="card-body">
-                <canvas id="chartPanen" height="120"></canvas>
+                <div class="chart-box">
+                    <canvas id="chartPanen"></canvas>
+                </div>
             </div>
         </div>
     </div>
-
-    {{-- Status Tanaman --}}
     <div class="col-lg-4 col-12 mb-3">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm dashboard-chart-card h-100">
             <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-chart-pie me-2"></i> Status Tanaman</h3>
+                <h3 class="card-title"><i class="fas fa-chart-pie mr-2"></i>Status Tanaman</h3>
             </div>
             <div class="card-body">
-                <canvas id="chartStatus" height="180"></canvas>
+                <div class="chart-box chart-box-sm">
+                    <canvas id="chartStatus"></canvas>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row">
-    {{-- Sebaran per Kabupaten --}}
     <div class="col-lg-6 col-12 mb-3">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm dashboard-chart-card h-100">
             <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-chart-bar me-2"></i> Sebaran Petani per Kabupaten</h3>
+                <h3 class="card-title"><i class="fas fa-chart-bar mr-2"></i>Sebaran Petani per Kabupaten</h3>
             </div>
             <div class="card-body">
-                <canvas id="chartKabupaten" height="180"></canvas>
+                <div class="chart-box chart-box-sm">
+                    <canvas id="chartKabupaten"></canvas>
+                </div>
             </div>
         </div>
     </div>
-
-    {{-- Kualitas Panen --}}
     <div class="col-lg-6 col-12 mb-3">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm dashboard-chart-card h-100">
             <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-chart-doughnut me-2"></i> Kualitas Panen</h3>
+                <h3 class="card-title"><i class="fas fa-chart-pie mr-2"></i>Kualitas Panen</h3>
             </div>
             <div class="card-body">
-                <canvas id="chartKualitas" height="180"></canvas>
+                <div class="chart-box chart-box-sm">
+                    <canvas id="chartKualitas"></canvas>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Tabel Terbaru --}}
 <div class="row">
     <div class="col-lg-6 col-12 mb-3">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm dashboard-table-card h-100">
             <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-user-plus me-2"></i> Anggota Terbaru</h3>
+                <h3 class="card-title"><i class="fas fa-user-plus mr-2"></i>Anggota Terbaru</h3>
                 <div class="card-tools">
                     <a href="{{ route('anggota.index') }}" class="btn btn-sm btn-light">Lihat Semua</a>
                 </div>
@@ -148,7 +154,12 @@
                 <div class="table-responsive">
                     <table class="table table-sm table-hover mb-0">
                         <thead class="bg-light">
-                            <tr><th>Nomor</th><th>Nama</th><th>Status</th><th>Tgl Daftar</th></tr>
+                            <tr>
+                                <th>Nomor</th>
+                                <th>Nama</th>
+                                <th>Status</th>
+                                <th>Tgl Daftar</th>
+                            </tr>
                         </thead>
                         <tbody>
                             @forelse($anggotaTerbaru as $a)
@@ -157,13 +168,15 @@
                                     <td>{{ $a->nama_lengkap }}</td>
                                     <td>
                                         <span class="badge badge-{{ $a->status === 'aktif' ? 'success' : ($a->status === 'pending' ? 'warning' : 'danger') }}">
-                                            {{ $a->status }}
+                                            {{ ucfirst($a->status) }}
                                         </span>
                                     </td>
-                                    <td>{{ $a->tanggal_daftar->format('d/m/Y') }}</td>
+                                    <td>{{ optional($a->tanggal_daftar)->format('d/m/Y') }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="4" class="text-center text-muted py-3">Belum ada data</td></tr>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-3">Belum ada data</td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -173,9 +186,9 @@
     </div>
 
     <div class="col-lg-6 col-12 mb-3">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm dashboard-table-card h-100">
             <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-shopping-basket me-2"></i> Panen Terbaru</h3>
+                <h3 class="card-title"><i class="fas fa-shopping-basket mr-2"></i>Panen Terbaru</h3>
                 <div class="card-tools">
                     <a href="{{ route('panen.index') }}" class="btn btn-sm btn-light">Lihat Semua</a>
                 </div>
@@ -184,18 +197,25 @@
                 <div class="table-responsive">
                     <table class="table table-sm table-hover mb-0">
                         <thead class="bg-light">
-                            <tr><th>Petani</th><th>Lahan</th><th>Kg</th><th>Tgl Panen</th></tr>
+                            <tr>
+                                <th>Petani</th>
+                                <th>Lahan</th>
+                                <th>Kg</th>
+                                <th>Tgl Panen</th>
+                            </tr>
                         </thead>
                         <tbody>
                             @forelse($panenTerbaru as $p)
                                 <tr>
                                     <td>{{ $p->anggota->nama_lengkap ?? '-' }}</td>
                                     <td>{{ $p->lahan->nama_lahan ?? '-' }}</td>
-                                    <td><strong>{{ number_format($p->berat_panen_kg) }}</strong></td>
-                                    <td>{{ $p->tanggal_panen->format('d/m/Y') }}</td>
+                                    <td><strong>{{ number_format($p->berat_panen_kg, 0, ',', '.') }}</strong></td>
+                                    <td>{{ optional($p->tanggal_panen)->format('d/m/Y') }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="4" class="text-center text-muted py-3">Belum ada data</td></tr>
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-3">Belum ada data</td>
+                                </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -204,168 +224,221 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @push('scripts')
 <script>
-// ============ PETA GIS ============
-const map = L.map('map-dashboard').setView([-7.5, 110.5], 7);
+const lahanShowBaseUrl = @json($dashboardLahanUrl);
+const lahanData = @json($lahanPeta);
+const panenData = @json($panenBulanan);
+const statusData = @json($statusTanaman);
+const kabData = @json($sebaranKabupaten);
+const kualitasData = @json($kualitasPanen);
+
+const map = L.map('map-dashboard').setView([-2.5, 118], 5);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
+    attribution: '&copy; OpenStreetMap contributors',
     maxZoom: 18
 }).addTo(map);
 
-const lahanData = @json($lahanPeta);
-const markers = L.markerClusterGroup ? L.markerClusterGroup() : L.layerGroup();
+const markerLayer = L.layerGroup().addTo(map);
+const mapBounds = [];
 
-const iconLahan = L.divIcon({
-    html: '<i class="fas fa-map-marker-alt" style="color:#2e7d32;font-size:24px;"></i>',
-    iconSize: [24, 32],
-    iconAnchor: [12, 32],
-    className: 'leaflet-div-icon-clean'
+lahanData.forEach(function(lahan) {
+    const isBumdes = lahan.anggota && lahan.anggota.jenis_anggota === 'bumdes';
+    const marker = L.circleMarker([lahan.latitude, lahan.longitude], {
+        radius: isBumdes ? 10 : 8,
+        color: isBumdes ? '#0d6efd' : '#2e7d32',
+        weight: 2,
+        fillColor: isBumdes ? '#5aa2ff' : '#6cc070',
+        fillOpacity: 0.9
+    }).addTo(markerLayer);
+    mapBounds.push([lahan.latitude, lahan.longitude]);
+    marker.bindPopup(
+        '<div style="min-width:180px;">' +
+            '<strong><i class="fas fa-map-marked-alt mr-1" style="color:' + (isBumdes ? '#0d6efd' : '#2e7d32') + ';"></i>' + lahan.nama_lahan + '</strong><br>' +
+            '<small class="text-muted">' + (lahan.desa_nama || '-') + ', ' + (lahan.kabupaten_nama || '-') + '</small><br>' +
+            '<hr style="margin:6px 0;">' +
+            '<small><b>Petani:</b> ' + (lahan.anggota ? lahan.anggota.nama_lengkap : '-') + '</small><br>' +
+            '<small><b>Jenis:</b> ' + (isBumdes ? 'BUMDes' : 'Pribadi') + '</small><br>' +
+            (isBumdes && lahan.anggota && lahan.anggota.bumdes ? '<small><b>Nama BUMDes:</b> ' + lahan.anggota.bumdes.nama + '</small><br>' : '') +
+            '<small><b>Status lahan:</b> ' + (lahan.status_kepemilikan || '-') + '</small><br>' +
+            '<small><b>Luas:</b> ' + Number(lahan.luas_lahan || 0).toLocaleString('id-ID') + ' ' + lahan.satuan_luas + '</small><br>' +
+            '<a href="' + lahanShowBaseUrl + '/' + lahan.id + '" class="btn btn-xs btn-success mt-2">Detail</a>' +
+        '</div>'
+    );
 });
 
-lahanData.forEach(function(l) {
-    const marker = L.marker([l.latitude, l.longitude], {icon: iconLahan});
-    marker.bindPopup(`
-        <div style="min-width:180px">
-            <strong><i class="fas fa-map-marked-alt text-success"></i> ${l.nama_lahan}</strong><br>
-            <small class="text-muted">${l.desa_nama || ''}, ${l.kabupaten_nama || ''}</small><br>
-            <hr style="margin:6px 0">
-            <small><b>Petani:</b> ${l.anggota ? l.anggota.nama_lengkap : '-'}</small><br>
-            <small><b>Luas:</b> ${parseFloat(l.luas_lahan).toLocaleString('id')} ${l.satuan_luas}</small><br>
-            <a href="/porang/public/lahan/${l.id}" class="btn btn-xs btn-success mt-2">Detail</a>
-        </div>
-    `);
-
-    if (markers.addLayer) markers.addLayer(marker);
-    else marker.addTo(map);
-});
-
-if (markers.addTo) markers.addTo(map);
-
-if (lahanData.length === 0) {
-    map.setView([-2.5, 118], 5);
+if (mapBounds.length > 0) {
+    map.fitBounds(mapBounds, { padding: [30, 30] });
 }
 
-// ============ CHART PANEN BULANAN ============
-const panenData = @json($panenBulanan);
-const bulanLabels = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nov','Des'];
-const labelsChart = panenData.map(d => bulanLabels[d.bulan - 1] + ' ' + d.tahun);
-const kgData = panenData.map(d => parseFloat(d.total_kg));
-const nilaiData = panenData.map(d => parseFloat(d.total_nilai));
+function renderEmptyState(canvasId, message) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || !canvas.parentElement) {
+        return;
+    }
 
-new Chart(document.getElementById('chartPanen'), {
+    canvas.parentElement.innerHTML =
+        '<div class="chart-empty"><div><i class="fas fa-chart-bar fa-2x mb-3 d-block"></i>' + message + '</div></div>';
+}
+
+function createChartSafely(canvasId, hasData, config, emptyMessage) {
+    if (!hasData) {
+        renderEmptyState(canvasId, emptyMessage);
+        return;
+    }
+
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) {
+        return;
+    }
+
+    new Chart(canvas, config);
+}
+
+const bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agt', 'Sep', 'Okt', 'Nov', 'Des'];
+const labelsChart = panenData.map(function(item) {
+    return bulanLabels[Number(item.bulan) - 1] + ' ' + item.tahun;
+});
+
+createChartSafely('chartPanen', panenData.length > 0, {
     type: 'bar',
     data: {
         labels: labelsChart,
         datasets: [
             {
                 label: 'Berat (Kg)',
-                data: kgData,
-                backgroundColor: 'rgba(46,125,50,0.7)',
-                borderColor: '#2e7d32',
-                borderWidth: 1,
-                yAxisID: 'yKg',
+                data: panenData.map((item) => Number(item.total_kg || 0)),
+                backgroundColor: 'rgba(46,125,50,0.78)',
+                borderRadius: 10,
+                borderSkipped: false,
+                yAxisID: 'yKg'
             },
             {
                 label: 'Nilai (Rp)',
-                data: nilaiData,
+                data: panenData.map((item) => Number(item.total_nilai || 0)),
                 type: 'line',
                 borderColor: '#ff9800',
-                backgroundColor: 'rgba(255,152,0,0.15)',
+                backgroundColor: 'rgba(255,152,0,0.12)',
                 fill: true,
                 yAxisID: 'yNilai',
-                tension: 0.4,
+                tension: 0.35,
+                pointRadius: 3,
+                pointHoverRadius: 4
             }
         ]
     },
     options: {
+        maintainAspectRatio: false,
         responsive: true,
         interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { position: 'top' } },
+        plugins: {
+            legend: { position: 'top', align: 'start' }
+        },
         scales: {
+            x: {
+                grid: { display: false }
+            },
             yKg: {
-                type: 'linear', position: 'left',
+                type: 'linear',
+                position: 'left',
+                beginAtZero: true,
                 title: { display: true, text: 'Kg' }
             },
             yNilai: {
-                type: 'linear', position: 'right',
+                type: 'linear',
+                position: 'right',
+                beginAtZero: true,
                 title: { display: true, text: 'Nilai (Rp)' },
                 grid: { drawOnChartArea: false }
             }
         }
     }
-});
+}, 'Belum ada data panen bulanan untuk ditampilkan.');
 
-// ============ CHART STATUS TANAMAN ============
-const statusData = @json($statusTanaman);
 const statusColors = {
-    'persiapan': '#9e9e9e', 'tanam': '#1976d2',
-    'tumbuh': '#388e3c', 'panen': '#f57f17', 'gagal': '#c62828'
+    persiapan: '#9e9e9e',
+    tanam: '#1976d2',
+    tumbuh: '#388e3c',
+    panen: '#f57f17',
+    gagal: '#c62828'
 };
 
-new Chart(document.getElementById('chartStatus'), {
+createChartSafely('chartStatus', statusData.length > 0, {
     type: 'doughnut',
     data: {
-        labels: statusData.map(d => d.status.charAt(0).toUpperCase() + d.status.slice(1)),
+        labels: statusData.map((item) => item.status.charAt(0).toUpperCase() + item.status.slice(1)),
         datasets: [{
-            data: statusData.map(d => d.total),
-            backgroundColor: statusData.map(d => statusColors[d.status] || '#9e9e9e'),
+            data: statusData.map((item) => Number(item.total || 0)),
+            backgroundColor: statusData.map((item) => statusColors[item.status] || '#9e9e9e'),
+            borderWidth: 0
         }]
     },
     options: {
+        maintainAspectRatio: false,
         responsive: true,
         plugins: {
-            legend: { position: 'bottom' },
-        }
+            legend: { position: 'bottom' }
+        },
+        cutout: '62%'
     }
-});
+}, 'Belum ada data status tanaman.');
 
-// ============ CHART SEBARAN KABUPATEN ============
-const kabData = @json($sebaranKabupaten);
-new Chart(document.getElementById('chartKabupaten'), {
+createChartSafely('chartKabupaten', kabData.length > 0, {
     type: 'bar',
     data: {
-        labels: kabData.map(d => d.kabupaten_ktp || 'Tidak Diketahui'),
+        labels: kabData.map((item) => item.kabupaten_ktp || 'Tidak Diketahui'),
         datasets: [{
             label: 'Jumlah Petani',
-            data: kabData.map(d => d.total),
+            data: kabData.map((item) => Number(item.total || 0)),
             backgroundColor: '#2e7d32',
+            borderRadius: 8,
+            borderSkipped: false
         }]
     },
     options: {
+        maintainAspectRatio: false,
         indexAxis: 'y',
         responsive: true,
         plugins: { legend: { display: false } },
-        scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+        scales: {
+            x: {
+                beginAtZero: true,
+                ticks: { precision: 0 }
+            },
+            y: {
+                grid: { display: false }
+            }
+        }
     }
-});
+}, 'Belum ada data sebaran kabupaten.');
 
-// ============ CHART KUALITAS ============
-const kualitasData = @json($kualitasPanen);
-new Chart(document.getElementById('chartKualitas'), {
+createChartSafely('chartKualitas', kualitasData.length > 0, {
     type: 'pie',
     data: {
-        labels: kualitasData.map(d => d.kualitas),
+        labels: kualitasData.map((item) => item.kualitas),
         datasets: [{
-            data: kualitasData.map(d => parseFloat(d.total_kg)),
+            data: kualitasData.map((item) => Number(item.total_kg || 0)),
             backgroundColor: ['#4caf50', '#ffc107', '#9e9e9e'],
+            borderWidth: 0
         }]
     },
     options: {
+        maintainAspectRatio: false,
         responsive: true,
         plugins: {
             legend: { position: 'bottom' },
             tooltip: {
                 callbacks: {
-                    label: (ctx) => ` ${ctx.label}: ${parseFloat(ctx.raw).toLocaleString('id')} Kg`
+                    label: function(ctx) {
+                        return ' ' + ctx.label + ': ' + Number(ctx.raw || 0).toLocaleString('id-ID') + ' Kg';
+                    }
                 }
             }
         }
     }
-});
+}, 'Belum ada data kualitas panen.');
 </script>
 @endpush

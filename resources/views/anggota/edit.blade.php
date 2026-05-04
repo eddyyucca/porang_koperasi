@@ -223,9 +223,19 @@
 @push('scripts')
 @include('components.wilayah-script')
 <script>
-$('input[name=jenis_anggota]').on('change', function() {
-    $('#field-bumdes').toggle(this.value === 'bumdes');
-});
+function syncBumdesField() {
+    const isBumdes = $('input[name=jenis_anggota]:checked').val() === 'bumdes';
+    const bumdesSelect = $('select[name=bumdes_id]');
+    $('#field-bumdes').toggle(isBumdes);
+    bumdesSelect.prop('required', isBumdes);
+
+    if (!isBumdes) {
+        bumdesSelect.val('').trigger('change');
+    }
+}
+
+$('input[name=jenis_anggota]').on('change', syncBumdesField);
+syncBumdesField();
 
 function previewImg(inputId, previewId) {
     const input = document.getElementById(inputId);
