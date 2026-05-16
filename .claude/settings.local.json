@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem \"c:\\\\xampp\\\\mysql\\\\data\" -Filter \"*.err\")",
+      "Bash(Select-Object Name, FullName)"
+    ]
+  }
+}

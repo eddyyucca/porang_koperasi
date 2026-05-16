@@ -121,6 +121,9 @@ class AnggotaController extends Controller
         if (($data['jenis_anggota'] ?? null) !== 'bumdes') {
             $data['bumdes_id'] = null;
         }
+        if (($data['jenis_anggota'] ?? null) !== 'kelompok_tani') {
+            $data['kelompok_tani_id'] = null;
+        }
 
         return $data;
     }
@@ -152,8 +155,9 @@ class AnggotaController extends Controller
             'kode_pos_ktp'       => 'nullable|string|max:10',
             'telepon'            => 'nullable|string|max:20',
             'email'              => 'nullable|email|max:100',
-            'jenis_anggota'      => 'required|in:personal,bumdes',
+            'jenis_anggota'      => 'required|in:personal,bumdes,mandiri,kelompok_tani',
             'bumdes_id'          => 'nullable|required_if:jenis_anggota,bumdes|exists:bumdes,id',
+            'kelompok_tani_id'   => 'nullable|required_if:jenis_anggota,kelompok_tani|exists:kelompok_tani,id',
             'koperasi_id'        => 'nullable|exists:koperasi,id',
             'tanggal_daftar'     => 'required|date',
             'status'             => 'nullable|in:aktif,non-aktif,pending',

@@ -80,7 +80,7 @@
     </div>
 
     <div class="text-center mt-3">
-        <small class="text-white-50">&copy; {{ date('Y') }} Koperasi Tani Porang</small>
+        <small class="text-white-50">&copy; {{ date('Y') }} Koperasi Barakat Pangan Banua</small>
     </div>
 </div>
 

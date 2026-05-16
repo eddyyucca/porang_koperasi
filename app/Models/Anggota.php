@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\KelompokTani;
 
 class Anggota extends Model
 {
     protected $table = 'anggota';
 
     protected $fillable = [
-        'nomor_anggota', 'jenis_anggota', 'bumdes_id',
+        'nomor_anggota', 'jenis_anggota', 'bumdes_id', 'kelompok_tani_id',
         'nik', 'nama_lengkap', 'tempat_lahir', 'tanggal_lahir',
         'jenis_kelamin', 'golongan_darah', 'agama', 'status_perkawinan',
         'pendidikan', 'pekerjaan_ktp', 'kewarganegaraan',
@@ -38,6 +39,11 @@ class Anggota extends Model
     public function bumdes(): BelongsTo
     {
         return $this->belongsTo(Bumdes::class);
+    }
+
+    public function kelompokTani(): BelongsTo
+    {
+        return $this->belongsTo(KelompokTani::class);
     }
 
     public function lahan(): HasMany

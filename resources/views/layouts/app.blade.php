@@ -219,7 +219,7 @@
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="{{ route('dashboard') }}" class="nav-link">
-                    <i class="fas fa-seedling me-1"></i> Koperasi Tani Porang
+                    <i class="fas fa-seedling me-1"></i> Koperasi Barakat Pangan Banua
                 </a>
             </li>
         </ul>
@@ -294,6 +294,17 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('kelompok-tani.index') }}" class="nav-link {{ request()->routeIs('kelompok-tani.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-people-group"></i>
+                            <p>Kelompok Tani</p>
+                            @php $pendingKT = \App\Models\KelompokTani::where('status','pending')->count() @endphp
+                            @if($pendingKT > 0)
+                                <span class="badge badge-warning right">{{ $pendingKT }}</span>
+                            @endif
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
                         <a href="{{ route('anggota.index') }}" class="nav-link {{ request()->routeIs('anggota.*') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Data Petani</p>
@@ -335,6 +346,17 @@
                             <p>Peta GIS</p>
                         </a>
                     </li>
+
+                    @if(Auth::user()->isSuperAdmin())
+                    <li class="nav-header text-uppercase">Super Admin</li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('dokumen-pdf.index') }}" class="nav-link {{ request()->routeIs('dokumen-pdf.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-file-pdf" style="color:#ef5350;"></i>
+                            <p>Dokumen PDF</p>
+                        </a>
+                    </li>
+                    @endif
 
                 </ul>
             </nav>
@@ -398,7 +420,7 @@
         <div class="float-right d-none d-sm-block">
             <b>Versi</b> 1.0.0
         </div>
-        <strong>Sistem Informasi Koperasi Tani Porang</strong>
+        <strong>Sistem Informasi Koperasi Barakat Pangan Banua</strong>
         &copy; {{ date('Y') }}
     </footer>
 

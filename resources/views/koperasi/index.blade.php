@@ -22,7 +22,7 @@
             </div>
             <div class="card-body text-center">
                 <img src="{{ $koperasi && $koperasi->logo ? asset('storage/' . $koperasi->logo) : $logoPlaceholder }}" alt="Logo Koperasi" class="img-fluid rounded border mb-3" style="max-height:220px;">
-                <h4 class="font-weight-bold mb-1">{{ optional($koperasi)->nama ?: 'Koperasi Tani Porang' }}</h4>
+                <h4 class="font-weight-bold mb-1">{{ optional($koperasi)->nama ?: 'Koperasi Barakat Pangan Banua' }}</h4>
                 <p class="text-muted mb-2">Nomor Badan Hukum: {{ optional($koperasi)->nomor_badan_hukum ?: '-' }}</p>
                 <p class="mb-0">Tanggal Berdiri: {{ optional($koperasi?->tanggal_berdiri)->format('d M Y') ?: '-' }}</p>
             </div>
