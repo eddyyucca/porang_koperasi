@@ -78,8 +78,8 @@
                         <i class="fas fa-info-circle mr-1"></i>Klik marker untuk melihat detail lahan. Data tanpa koordinat tidak ditampilkan.
                     </div>
                     <div>
-                        <span class="badge badge-light border mr-2"><i class="fas fa-circle text-success mr-1"></i>Lahan pribadi</span>
-                        <span class="badge badge-light border"><i class="fas fa-circle text-primary mr-1"></i>Lahan anggota BUMDes</span>
+                        <span class="badge badge-light border mr-2"><i class="fas fa-circle text-primary mr-1"></i>Lahan Petani</span>
+                        <span class="badge badge-light border"><i class="fas fa-circle text-success mr-1"></i>Lahan Desa (BUMDes)</span>
                     </div>
                 </div>
             </div>
@@ -123,18 +123,6 @@
             <div class="card-body">
                 <div class="chart-box chart-box-sm">
                     <canvas id="chartKabupaten"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6 col-12 mb-3">
-        <div class="card shadow-sm dashboard-chart-card h-100">
-            <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-chart-pie mr-2"></i>Kualitas Panen</h3>
-            </div>
-            <div class="card-body">
-                <div class="chart-box chart-box-sm">
-                    <canvas id="chartKualitas"></canvas>
                 </div>
             </div>
         </div>
@@ -233,7 +221,6 @@ const lahanData = @json($lahanPeta);
 const panenData = @json($panenBulanan);
 const statusData = @json($statusTanaman);
 const kabData = @json($sebaranKabupaten);
-const kualitasData = @json($kualitasPanen);
 
 const map = L.map('map-dashboard').setView([-2.5, 118], 5);
 
@@ -246,23 +233,22 @@ const markerLayer = L.layerGroup().addTo(map);
 const mapBounds = [];
 
 lahanData.forEach(function(lahan) {
-    const isBumdes = lahan.anggota && lahan.anggota.jenis_anggota === 'bumdes';
+    const isBumdes = lahan.pemilik_type === 'bumdes';
+    const pemilikNama = isBumdes ? (lahan.bumdes ? lahan.bumdes.nama : '-') : (lahan.anggota ? lahan.anggota.nama_lengkap : '-');
     const marker = L.circleMarker([lahan.latitude, lahan.longitude], {
         radius: isBumdes ? 10 : 8,
-        color: isBumdes ? '#0d6efd' : '#2e7d32',
+        color: isBumdes ? '#2e7d32' : '#0d6efd',
         weight: 2,
-        fillColor: isBumdes ? '#5aa2ff' : '#6cc070',
+        fillColor: isBumdes ? '#6cc070' : '#5aa2ff',
         fillOpacity: 0.9
     }).addTo(markerLayer);
     mapBounds.push([lahan.latitude, lahan.longitude]);
     marker.bindPopup(
         '<div style="min-width:180px;">' +
-            '<strong><i class="fas fa-map-marked-alt mr-1" style="color:' + (isBumdes ? '#0d6efd' : '#2e7d32') + ';"></i>' + lahan.nama_lahan + '</strong><br>' +
+            '<strong><i class="fas fa-map-marked-alt mr-1" style="color:' + (isBumdes ? '#2e7d32' : '#0d6efd') + ';"></i>' + lahan.nama_lahan + '</strong><br>' +
             '<small class="text-muted">' + (lahan.desa_nama || '-') + ', ' + (lahan.kabupaten_nama || '-') + '</small><br>' +
             '<hr style="margin:6px 0;">' +
-            '<small><b>Petani:</b> ' + (lahan.anggota ? lahan.anggota.nama_lengkap : '-') + '</small><br>' +
-            '<small><b>Jenis:</b> ' + (isBumdes ? 'BUMDes' : 'Pribadi') + '</small><br>' +
-            (isBumdes && lahan.anggota && lahan.anggota.bumdes ? '<small><b>Nama BUMDes:</b> ' + lahan.anggota.bumdes.nama + '</small><br>' : '') +
+            '<small><b>' + (isBumdes ? 'BUMDes' : 'Petani') + ':</b> ' + pemilikNama + '</small><br>' +
             '<small><b>Status lahan:</b> ' + (lahan.status_kepemilikan || '-') + '</small><br>' +
             '<small><b>Luas:</b> ' + Number(lahan.luas_lahan || 0).toLocaleString('id-ID') + ' ' + lahan.satuan_luas + '</small><br>' +
             '<a href="' + lahanShowBaseUrl + '/' + lahan.id + '" class="btn btn-xs btn-success mt-2">Detail</a>' +
@@ -415,30 +401,5 @@ createChartSafely('chartKabupaten', kabData.length > 0, {
     }
 }, 'Belum ada data sebaran kabupaten.');
 
-createChartSafely('chartKualitas', kualitasData.length > 0, {
-    type: 'pie',
-    data: {
-        labels: kualitasData.map((item) => item.kualitas),
-        datasets: [{
-            data: kualitasData.map((item) => Number(item.total_kg || 0)),
-            backgroundColor: ['#4caf50', '#ffc107', '#9e9e9e'],
-            borderWidth: 0
-        }]
-    },
-    options: {
-        maintainAspectRatio: false,
-        responsive: true,
-        plugins: {
-            legend: { position: 'bottom' },
-            tooltip: {
-                callbacks: {
-                    label: function(ctx) {
-                        return ' ' + ctx.label + ': ' + Number(ctx.raw || 0).toLocaleString('id-ID') + ' Kg';
-                    }
-                }
-            }
-        }
-    }
-}, 'Belum ada data kualitas panen.');
 </script>
 @endpush

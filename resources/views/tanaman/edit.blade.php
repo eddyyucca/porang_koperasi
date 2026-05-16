@@ -41,14 +41,6 @@
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="font-weight-bold">Varietas</label>
-                        <select name="varietas" class="form-control">
-                            @foreach(['Amorphophallus muelleri','Amorphophallus campanulatus','Amorphophallus oncophyllus','Lainnya'] as $varietas)
-                                <option value="{{ $varietas }}" {{ old('varietas', $tanaman->varietas) === $varietas ? 'selected' : '' }}>{{ $varietas }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
                         <label class="font-weight-bold">Sumber Bibit</label>
                         <select name="sumber_bibit" class="form-control">
                             @foreach(['katak/bulbil','umbi','biji','kultur jaringan'] as $sumber)
@@ -65,14 +57,23 @@
                         <input type="number" step="0.01" name="luas_tanam" class="form-control" value="{{ old('luas_tanam', $tanaman->luas_tanam) }}">
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label class="font-weight-bold">Jarak Tanam</label>
-                        <input type="text" name="jarak_tanam" class="form-control" value="{{ old('jarak_tanam', $tanaman->jarak_tanam) }}" placeholder="100x100 cm">
+                        <label class="font-weight-bold">Jarak Tanam X (cm) <span class="text-danger">*</span></label>
+                        <input type="number" name="jarak_tanam_x_cm" class="form-control"
+                            value="{{ old('jarak_tanam_x_cm', $tanaman->jarak_tanam_x_cm) }}" min="30" max="300" required>
                     </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="font-weight-bold">Jarak Tanam Y (cm) <span class="text-danger">*</span></label>
+                        <input type="number" name="jarak_tanam_y_cm" class="form-control"
+                            value="{{ old('jarak_tanam_y_cm', $tanaman->jarak_tanam_y_cm) }}" min="30" max="300" required>
+                    </div>
+                    <input type="hidden" name="jarak_tanam" value="{{ $tanaman->jarak_tanam_x_cm }}x{{ $tanaman->jarak_tanam_y_cm }} cm">
                     <div class="col-md-3 mb-3">
                         <label class="font-weight-bold">Status</label>
                         <select name="status" class="form-control">
-                            @foreach(['persiapan','tanam','tumbuh','panen','gagal'] as $status)
-                                <option value="{{ $status }}" {{ old('status', $tanaman->status) === $status ? 'selected' : '' }}>{{ ucfirst($status) }}</option>
+                            @foreach(['persiapan','tanam','tumbuh','siap_panen','panen','tunda','gagal'] as $s)
+                                <option value="{{ $s }}" {{ old('status', $tanaman->status) === $s ? 'selected' : '' }}>
+                                    {{ ucfirst(str_replace('_',' ',$s)) }}
+                                </option>
                             @endforeach
                         </select>
                     </div>

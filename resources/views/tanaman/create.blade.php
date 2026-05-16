@@ -17,9 +17,9 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="font-weight-bold">Petani / Anggota</label>
-                        <select name="anggota_id" id="anggota-select" class="form-control" data-select2 required>
-                            <option value="">-- Pilih Anggota --</option>
+                        <label class="font-weight-bold">Petani / Anggota <small class="text-muted">(kosongkan untuk lahan BUMDes)</small></label>
+                        <select name="anggota_id" id="anggota-select" class="form-control" data-select2>
+                            <option value="">-- Lahan BUMDes / Desa --</option>
                             @foreach($anggota as $item)
                                 <option value="{{ $item->id }}" {{ (string) old('anggota_id', request('anggota_id')) === (string) $item->id ? 'selected' : '' }}>
                                     {{ $item->nama_lengkap }} ({{ $item->nomor_anggota }})
@@ -29,20 +29,12 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label class="font-weight-bold">Lahan</label>
-                        <select name="lahan_id" id="lahan-select" class="form-control" data-select2 {{ old('anggota_id', request('anggota_id')) ? '' : 'disabled' }} required>
+                        <select name="lahan_id" id="lahan-select" class="form-control" data-select2 {{ (old('anggota_id', request('anggota_id')) || $lahan->count()) ? '' : 'disabled' }} required>
                             <option value="">-- Pilih Lahan --</option>
                             @foreach($lahan as $item)
                                 <option value="{{ $item->id }}" {{ (string) old('lahan_id', request('lahan_id')) === (string) $item->id ? 'selected' : '' }}>
                                     {{ $item->nama_lahan }} ({{ number_format($item->luas_lahan, 2, ',', '.') }} {{ $item->satuan_luas }})
                                 </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="font-weight-bold">Varietas</label>
-                        <select name="varietas" class="form-control">
-                            @foreach(['Amorphophallus muelleri','Amorphophallus campanulatus','Amorphophallus oncophyllus','Lainnya'] as $varietas)
-                                <option value="{{ $varietas }}" {{ old('varietas', 'Amorphophallus muelleri') === $varietas ? 'selected' : '' }}>{{ $varietas }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -63,14 +55,30 @@
                         <input type="number" step="0.01" name="luas_tanam" class="form-control" value="{{ old('luas_tanam') }}">
                     </div>
                     <div class="col-md-3 mb-3">
-                        <label class="font-weight-bold">Jarak Tanam</label>
-                        <input type="text" name="jarak_tanam" class="form-control" value="{{ old('jarak_tanam') }}" placeholder="100x100 cm">
+                        <label class="font-weight-bold">Jarak Tanam X (cm) <span class="text-danger">*</span></label>
+                        <input type="number" name="jarak_tanam_x_cm" id="jarakX" class="form-control"
+                            value="{{ old('jarak_tanam_x_cm', 100) }}" min="30" max="300" required>
+                        <small class="text-muted">Jarak antar baris</small>
                     </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="font-weight-bold">Jarak Tanam Y (cm) <span class="text-danger">*</span></label>
+                        <input type="number" name="jarak_tanam_y_cm" id="jarakY" class="form-control"
+                            value="{{ old('jarak_tanam_y_cm', 100) }}" min="30" max="300" required>
+                        <small class="text-muted">Jarak dalam baris</small>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="alert alert-primary py-2 mb-0" id="estimasiBatangBox" style="display:none;">
+                            <i class="fas fa-calculator me-1"></i>
+                            Estimasi batang porang: <strong id="estimasiBatangVal">—</strong>
+                            <small class="text-muted ml-2" id="estimasiBatangNote"></small>
+                        </div>
+                    </div>
+                    <input type="hidden" name="jarak_tanam" id="jarakTanamStr" value="{{ old('jarak_tanam', '100x100 cm') }}">
                     <div class="col-md-3 mb-3">
                         <label class="font-weight-bold">Status</label>
                         <select name="status" class="form-control">
-                            @foreach(['persiapan','tanam','tumbuh','panen','gagal'] as $status)
-                                <option value="{{ $status }}" {{ old('status', 'tanam') === $status ? 'selected' : '' }}>{{ ucfirst($status) }}</option>
+                            @foreach(['persiapan','tanam','tumbuh','siap_panen','panen','tunda','gagal'] as $status)
+                                <option value="{{ $status }}" {{ old('status', 'persiapan') === $status ? 'selected' : '' }}>{{ ucfirst(str_replace('_',' ',$status)) }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -130,25 +138,61 @@
 @push('scripts')
 <script>
 const anggotaApiBaseLahan = @json(url('/api/anggota'));
+let lahanData = @json($lahan->values());
 
 $('#anggota-select').on('change', function() {
     const anggotaId = this.value;
     const $lahan = $('#lahan-select');
-    $lahan.prop('disabled', true).html('<option value="">Memuat data lahan...</option>').trigger('change.select2');
 
     if (!anggotaId) {
-        $lahan.html('<option value="">-- Pilih Lahan --</option>').prop('disabled', true).trigger('change.select2');
+        // Possibly BUMDes — if lahan was pre-loaded keep it, else disable
+        if (lahanData.length === 0) {
+            $lahan.html('<option value="">-- Pilih Lahan --</option>').prop('disabled', true).trigger('change.select2');
+        }
         return;
     }
 
+    $lahan.prop('disabled', true).html('<option value="">Memuat data lahan...</option>').trigger('change.select2');
+
     $.get(anggotaApiBaseLahan + '/' + anggotaId + '/lahan', function(data) {
+        lahanData = data;
         let options = '<option value="">-- Pilih Lahan --</option>';
         data.forEach(function(item) {
-            options += '<option value="' + item.id + '">' + item.nama_lahan + ' (' + Number(item.luas_lahan).toLocaleString('id-ID') + ' ' + item.satuan_luas + ')</option>';
+            options += `<option value="${item.id}" data-luas="${item.luas_lahan}" data-satuan="${item.satuan_luas}">
+                ${item.nama_lahan} (${Number(item.luas_lahan).toLocaleString('id-ID')} ${item.satuan_luas})
+            </option>`;
         });
         $lahan.html(options).prop('disabled', false).trigger('change.select2');
     });
 });
+
+$('#lahan-select').on('change', hitungBatang);
+
+$('#jarakX, #jarakY').on('input', function() {
+    const x = $('#jarakX').val(), y = $('#jarakY').val();
+    $('#jarakTanamStr').val(`${x}x${y} cm`);
+    hitungBatang();
+});
+
+function hitungBatang() {
+    const lahanId = $('#lahan-select').val();
+    const x = parseFloat($('#jarakX').val()) || 100;
+    const y = parseFloat($('#jarakY').val()) || 100;
+    const lahan = lahanData.find(l => l.id == lahanId);
+
+    if (!lahan) { $('#estimasiBatangBox').hide(); return; }
+
+    let luasM2 = parseFloat(lahan.luas_lahan) || 0;
+    if (lahan.satuan_luas === 'ha')  luasM2 *= 10000;
+    if (lahan.satuan_luas === 'are') luasM2 *= 100;
+
+    const jarak = (x / 100) * (y / 100);
+    const batang = Math.floor(luasM2 / jarak);
+
+    $('#estimasiBatangVal').text(batang.toLocaleString('id-ID') + ' batang');
+    $('#estimasiBatangNote').text(`(${luasM2.toLocaleString('id-ID')} m² ÷ ${x}×${y} cm)`);
+    $('#estimasiBatangBox').show();
+}
 
 $('#tanggal_tanam').on('change', function() {
     if (this.value) {
@@ -160,13 +204,11 @@ $('#tanggal_tanam').on('change', function() {
 
 document.getElementById('fotoTanaman').addEventListener('change', function(e) {
     const file = e.target.files[0];
-    if (!file) {
-        return;
-    }
+    if (!file) return;
     const reader = new FileReader();
-    reader.onload = function(ev) {
+    reader.onload = ev => {
         document.getElementById('previewFotoTanaman').innerHTML =
-            '<img src="' + ev.target.result + '" class="img-fluid rounded border" style="max-height:120px;">';
+            `<img src="${ev.target.result}" class="img-fluid rounded border" style="max-height:120px;">`;
     };
     reader.readAsDataURL(file);
 });

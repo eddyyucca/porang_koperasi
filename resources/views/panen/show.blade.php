@@ -15,7 +15,6 @@
             <div class="card-body">
                 <div class="mb-3"><small class="text-muted d-block">Tanggal Panen</small><strong>{{ optional($panen->tanggal_panen)->format('d M Y') }}</strong></div>
                 <div class="mb-3"><small class="text-muted d-block">Petani</small><strong>{{ $panen->anggota->nama_lengkap ?? '-' }}</strong></div>
-                <div class="mb-3"><small class="text-muted d-block">Kualitas</small><span class="badge badge-{{ $panen->kualitas_badge }}">{{ $panen->kualitas }}</span></div>
                 <div><small class="text-muted d-block">Status Jual</small><strong>{{ ucfirst($panen->status_jual) }}</strong></div>
             </div>
         </div>
@@ -24,7 +23,7 @@
             <div class="card-header card-header-porang"><h3 class="card-title">Tanaman Asal</h3></div>
             <div class="card-body">
                 @if($panen->tanaman)
-                    <a href="{{ route('tanaman.show', $panen->tanaman) }}"><strong>{{ $panen->tanaman->varietas }}</strong></a>
+                    <a href="{{ route('tanaman.show', $panen->tanaman) }}"><strong>{{ $panen->tanaman->lahan->nama_lahan ?? 'Lihat Detail' }}</strong></a>
                     <p class="text-muted mb-0 mt-2">Tanggal tanam: {{ optional($panen->tanaman->tanggal_tanam)->format('d/m/Y') ?: '-' }}</p>
                 @else
                     <p class="mb-0">-</p>

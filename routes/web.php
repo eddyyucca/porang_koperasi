@@ -12,6 +12,8 @@ use App\Http\Controllers\KoperasiController;
 use App\Http\Controllers\KelompokTaniController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\DokumenPdfController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\HargaPorangController;
 
 // Auth
 Route::get('/', fn() => view('welcome'))->name('home');
@@ -53,6 +55,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/anggota/{anggota}/lahan', [TanamanController::class, 'getLahanByAnggota'])
         ->name('api.anggota.lahan');
 
+    // Lifecycle actions (petani klik)
+    Route::post('/tanaman/{tanaman}/konfirmasi-tanam', [TanamanController::class, 'konfirmasiTanam'])
+        ->name('tanaman.konfirmasi-tanam');
+    Route::post('/tanaman/{tanaman}/konfirmasi-panen', [TanamanController::class, 'konfirmasiPanen'])
+        ->name('tanaman.konfirmasi-panen');
+    Route::post('/tanaman/{tanaman}/tunda-panen', [TanamanController::class, 'tundaPanen'])
+        ->name('tanaman.tunda-panen');
+    Route::post('/tanaman/{tanaman}/gagal-panen', [TanamanController::class, 'gajalPanen'])
+        ->name('tanaman.gagal-panen');
+
+    // Harga Porang
+    Route::get('/harga-porang', [HargaPorangController::class, 'index'])->name('harga-porang.index');
+    Route::post('/harga-porang', [HargaPorangController::class, 'store'])->name('harga-porang.store');
+    Route::delete('/harga-porang/{hargaPorang}', [HargaPorangController::class, 'destroy'])->name('harga-porang.destroy');
+    Route::get('/api/harga-porang', [HargaPorangController::class, 'hargaAktifApi'])->name('api.harga-porang');
+
     // Panen
     Route::resource('panen', PanenController::class);
     Route::get('/api/anggota/{anggota}/tanaman', [PanenController::class, 'getTanamanByAnggota'])
@@ -63,6 +81,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/dokumen-pdf', [DokumenPdfController::class, 'store'])->name('dokumen-pdf.store');
     Route::get('/dokumen-pdf/{dokumenPdf}/download', [DokumenPdfController::class, 'download'])->name('dokumen-pdf.download');
     Route::delete('/dokumen-pdf/{dokumenPdf}', [DokumenPdfController::class, 'destroy'])->name('dokumen-pdf.destroy');
+
+    // User management (superadmin only)
+    Route::resource('users', UserController::class)->except(['show']);
 
     // Kelompok Tani
     Route::resource('kelompok-tani', KelompokTaniController::class)

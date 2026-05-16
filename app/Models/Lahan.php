@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+// Bumdes loaded via relationship, no extra import needed (same namespace)
 
 class Lahan extends Model
 {
     protected $table = 'lahan';
 
     protected $fillable = [
-        'anggota_id', 'nama_lahan', 'luas_lahan', 'satuan_luas',
+        'anggota_id', 'pemilik_type', 'bumdes_id', 'nama_lahan', 'luas_lahan', 'satuan_luas',
         'provinsi_id', 'provinsi_nama', 'kabupaten_id', 'kabupaten_nama',
         'kecamatan_id', 'kecamatan_nama', 'desa_id', 'desa_nama', 'alamat_lahan',
         'latitude', 'longitude', 'geojson',
@@ -29,6 +30,19 @@ class Lahan extends Model
     public function anggota(): BelongsTo
     {
         return $this->belongsTo(Anggota::class);
+    }
+
+    public function bumdes(): BelongsTo
+    {
+        return $this->belongsTo(Bumdes::class);
+    }
+
+    public function getPemilikNamaAttribute(): string
+    {
+        if ($this->pemilik_type === 'bumdes') {
+            return $this->bumdes?->nama ?? '-';
+        }
+        return $this->anggota?->nama_lengkap ?? '-';
     }
 
     public function tanaman(): HasMany

@@ -263,7 +263,7 @@
                 </div>
                 <div class="info">
                     <a href="#" class="d-block text-white">{{ Auth::user()->name }}</a>
-                    <small class="text-secondary text-capitalize">{{ Auth::user()->role }}</small>
+                    <small class="text-secondary">{{ Auth::user()->role_label }}</small>
                 </div>
             </div>
 
@@ -338,6 +338,15 @@
                         </a>
                     </li>
 
+                    @if(Auth::user()->isAdmin())
+                    <li class="nav-item">
+                        <a href="{{ route('harga-porang.index') }}" class="nav-link {{ request()->routeIs('harga-porang.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tags" style="color:#ffd54f;"></i>
+                            <p>Harga Porang</p>
+                        </a>
+                    </li>
+                    @endif
+
                     <li class="nav-header text-uppercase">Sistem</li>
 
                     <li class="nav-item">
@@ -349,6 +358,13 @@
 
                     @if(Auth::user()->isSuperAdmin())
                     <li class="nav-header text-uppercase">Super Admin</li>
+
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-users-cog"></i>
+                            <p>Manajemen User</p>
+                        </a>
+                    </li>
 
                     <li class="nav-item">
                         <a href="{{ route('dokumen-pdf.index') }}" class="nav-link {{ request()->routeIs('dokumen-pdf.*') ? 'active' : '' }}">

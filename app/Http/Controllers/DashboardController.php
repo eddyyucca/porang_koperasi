@@ -52,20 +52,15 @@ class DashboardController extends Controller
             ->groupBy('status')
             ->get();
 
-        // Kualitas panen
-        $kualitasPanen = Panen::select('kualitas', DB::raw('SUM(berat_panen_kg) as total_kg'))
-            ->groupBy('kualitas')
-            ->get();
-
         // Data lahan dengan koordinat untuk peta
         $lahanPeta = Lahan::with([
-                'anggota:id,nama_lengkap,jenis_anggota,bumdes_id',
-                'anggota.bumdes:id,nama',
+                'anggota:id,nama_lengkap',
+                'bumdes:id,nama',
             ])
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->where('aktif', true)
-            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'desa_nama', 'kabupaten_nama', 'status_kepemilikan')
+            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'bumdes_id', 'pemilik_type', 'desa_nama', 'kabupaten_nama', 'status_kepemilikan')
             ->get();
 
         // Anggota terbaru
@@ -82,7 +77,7 @@ class DashboardController extends Controller
 
         return view('dashboard.index', compact(
             'koperasi', 'stats', 'sebaranKabupaten',
-            'panenBulanan', 'statusTanaman', 'kualitasPanen',
+            'panenBulanan', 'statusTanaman',
             'lahanPeta', 'anggotaTerbaru', 'panenTerbaru'
         ));
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bumdes;
 use App\Models\Lahan;
 use App\Models\Anggota;
 use Illuminate\Http\Request;
@@ -12,8 +13,8 @@ class LahanController extends Controller
     public function index(Request $request)
     {
         $query = Lahan::with([
-            'anggota:id,nama_lengkap,nomor_anggota,jenis_anggota,bumdes_id',
-            'anggota.bumdes:id,nama',
+            'anggota:id,nama_lengkap,nomor_anggota',
+            'bumdes:id,nama',
         ]);
 
         if ($request->filled('search')) {
@@ -22,7 +23,8 @@ class LahanController extends Controller
                 $q->where('nama_lahan', 'like', "%$s%")
                   ->orWhere('desa_nama', 'like', "%$s%")
                   ->orWhere('kabupaten_nama', 'like', "%$s%")
-                  ->orWhereHas('anggota', fn($q2) => $q2->where('nama_lengkap', 'like', "%$s%"));
+                  ->orWhereHas('anggota', fn($q2) => $q2->where('nama_lengkap', 'like', "%$s%"))
+                  ->orWhereHas('bumdes', fn($q2) => $q2->where('nama', 'like', "%$s%"));
             });
         }
 
@@ -34,17 +36,20 @@ class LahanController extends Controller
             $query->where('status_kepemilikan', $request->status);
         }
 
+        if ($request->filled('pemilik_type')) {
+            $query->where('pemilik_type', $request->pemilik_type);
+        }
+
         $lahan = $query->latest()->paginate(15)->withQueryString();
 
-        // Data untuk peta semua lahan
         $lahanPeta = Lahan::whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->where('aktif', true)
             ->with([
-                'anggota:id,nama_lengkap,jenis_anggota,bumdes_id',
-                'anggota.bumdes:id,nama',
+                'anggota:id,nama_lengkap',
+                'bumdes:id,nama',
             ])
-            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'desa_nama', 'kabupaten_nama', 'status_kepemilikan')
+            ->select('id', 'nama_lahan', 'latitude', 'longitude', 'luas_lahan', 'satuan_luas', 'anggota_id', 'bumdes_id', 'pemilik_type', 'desa_nama', 'kabupaten_nama', 'status_kepemilikan')
             ->get();
 
         return view('lahan.index', compact('lahan', 'lahanPeta'));
@@ -56,18 +61,31 @@ class LahanController extends Controller
             ->orderBy('nama_lengkap')
             ->get(['id', 'nama_lengkap', 'nomor_anggota']);
 
+        $bumdes = Bumdes::where('aktif', true)->orderBy('nama')->get(['id', 'nama']);
+
         $selectedAnggota = $request->filled('anggota_id')
             ? Anggota::find($request->anggota_id)
             : null;
 
-        return view('lahan.create', compact('anggota', 'selectedAnggota'));
+        $selectedBumdes = $request->filled('bumdes_id')
+            ? Bumdes::find($request->bumdes_id)
+            : null;
+
+        $defaultType = $request->filled('bumdes_id') ? 'bumdes' : 'petani';
+
+        return view('lahan.create', compact('anggota', 'bumdes', 'selectedAnggota', 'selectedBumdes', 'defaultType'));
     }
 
     public function store(Request $request)
     {
-        $request->validate($this->rules());
+        $data = $request->validate($this->rules($request));
 
-        $data = $request->except('dokumen_file');
+        // Clear the irrelevant owner fields
+        if ($data['pemilik_type'] === 'bumdes') {
+            $data['anggota_id'] = null;
+        } else {
+            $data['bumdes_id'] = null;
+        }
 
         if ($request->hasFile('dokumen_file')) {
             $data['dokumen_file'] = $request->file('dokumen_file')->store('dokumen_lahan', 'public');
@@ -81,7 +99,7 @@ class LahanController extends Controller
 
     public function show(Lahan $lahan)
     {
-        $lahan->load(['anggota', 'tanaman' => fn($q) => $q->latest(), 'panen' => fn($q) => $q->latest()]);
+        $lahan->load(['anggota', 'bumdes', 'tanaman' => fn($q) => $q->latest(), 'panen' => fn($q) => $q->latest()]);
         return view('lahan.show', compact('lahan'));
     }
 
@@ -90,14 +108,20 @@ class LahanController extends Controller
         $anggota = Anggota::where('status', 'aktif')
             ->orderBy('nama_lengkap')
             ->get(['id', 'nama_lengkap', 'nomor_anggota']);
-        return view('lahan.edit', compact('lahan', 'anggota'));
+        $bumdes = Bumdes::where('aktif', true)->orderBy('nama')->get(['id', 'nama']);
+
+        return view('lahan.edit', compact('lahan', 'anggota', 'bumdes'));
     }
 
     public function update(Request $request, Lahan $lahan)
     {
-        $request->validate($this->rules());
+        $data = $request->validate($this->rules($request));
 
-        $data = $request->except('dokumen_file');
+        if ($data['pemilik_type'] === 'bumdes') {
+            $data['anggota_id'] = null;
+        } else {
+            $data['bumdes_id'] = null;
+        }
 
         if ($request->hasFile('dokumen_file')) {
             if ($lahan->dokumen_file) Storage::disk('public')->delete($lahan->dokumen_file);
@@ -117,10 +141,14 @@ class LahanController extends Controller
         return redirect()->route('lahan.index')->with('success', 'Data lahan berhasil dihapus.');
     }
 
-    private function rules(): array
+    private function rules(Request $request): array
     {
+        $isPetani = $request->input('pemilik_type', 'petani') === 'petani';
+
         return [
-            'anggota_id'        => 'required|exists:anggota,id',
+            'pemilik_type'      => 'required|in:petani,bumdes',
+            'anggota_id'        => $isPetani ? 'required|exists:anggota,id' : 'nullable|exists:anggota,id',
+            'bumdes_id'         => !$isPetani ? 'required|exists:bumdes,id' : 'nullable|exists:bumdes,id',
             'nama_lahan'        => 'required|string|max:100',
             'luas_lahan'        => 'required|numeric|min:1',
             'satuan_luas'       => 'required|in:m2,ha,are',

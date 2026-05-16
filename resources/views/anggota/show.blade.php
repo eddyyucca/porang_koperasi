@@ -303,7 +303,6 @@
                                 @endif
                             </td>
                             <td>{{ number_format($panen->berat_panen_kg, 2, ',', '.') }} kg</td>
-                            <td><span class="badge badge-{{ $panen->kualitas_badge }}">{{ $panen->kualitas }}</span></td>
                             <td>Rp {{ number_format($panen->total_nilai ?? 0, 0, ',', '.') }}</td>
                         </tr>
                     @empty

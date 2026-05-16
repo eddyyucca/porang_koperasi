@@ -33,7 +33,7 @@
                             <option value="">-- Pilih Tanaman --</option>
                             @foreach($tanaman as $item)
                                 <option value="{{ $item->id }}" {{ (string) old('tanaman_id', request('tanaman_id')) === (string) $item->id ? 'selected' : '' }}>
-                                    {{ $item->varietas }} - {{ $item->lahan->nama_lahan ?? '-' }} ({{ ucfirst($item->status) }})
+                                    {{ $item->lahan->nama_lahan ?? '-' }} ({{ ucfirst($item->status) }})
                                 </option>
                             @endforeach
                         </select>
@@ -45,14 +45,6 @@
                     <div class="col-md-4 mb-3">
                         <label class="font-weight-bold">Berat Panen (kg)</label>
                         <input type="number" step="0.1" id="berat_panen_kg" name="berat_panen_kg" class="form-control" value="{{ old('berat_panen_kg') }}" required>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <label class="font-weight-bold">Kualitas</label>
-                        <select name="kualitas" class="form-control">
-                            @foreach(['Grade A','Grade B','Grade C'] as $kualitas)
-                                <option value="{{ $kualitas }}" {{ old('kualitas', 'Grade A') === $kualitas ? 'selected' : '' }}>{{ $kualitas }}</option>
-                            @endforeach
-                        </select>
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="font-weight-bold">Harga per kg</label>
@@ -102,12 +94,11 @@
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header card-header-porang"><h3 class="card-title">Harga Referensi Porang</h3></div>
+        <div class="card bg-success text-white">
+            <div class="card-header border-0"><h3 class="card-title"><i class="fas fa-info-circle mr-1"></i> Info</h3></div>
             <div class="card-body">
-                <p class="mb-2">Grade A (glucomannan tinggi): Rp 5.000-8.000/kg</p>
-                <p class="mb-2">Grade B (standar): Rp 3.000-5.000/kg</p>
-                <p class="mb-0">Grade C (kualitas rendah): Rp 1.500-3.000/kg</p>
+                <p class="mb-2">Harga porang ditetapkan oleh admin dan berlaku seragam untuk semua hasil panen.</p>
+                <p class="mb-0">Lihat harga terkini di menu <strong>Harga Porang</strong>.</p>
             </div>
         </div>
     </div>
@@ -135,7 +126,7 @@ $('#anggota-select').on('change', function() {
         let options = '<option value="">-- Pilih Tanaman --</option>';
         data.forEach(function(item) {
             const lahan = item.lahan ? item.lahan.nama_lahan : '-';
-            options += '<option value="' + item.id + '">' + item.varietas + ' - ' + lahan + ' (' + item.status + ')</option>';
+            options += '<option value="' + item.id + '">' + lahan + ' (' + item.status + ')</option>';
         });
         $tanaman.html(options).prop('disabled', false).trigger('change.select2');
     });

@@ -31,42 +31,57 @@
                 <div><small class="text-muted d-block">Provinsi</small><strong>{{ $bumdes->provinsi_nama ?: '-' }}</strong></div>
             </div>
         </div>
-        <a href="{{ route('bumdes.edit', $bumdes) }}" class="btn btn-warning">
-            <i class="fas fa-edit mr-1"></i>Edit
-        </a>
+        <div class="d-flex flex-wrap mb-3">
+            <a href="{{ route('bumdes.edit', $bumdes) }}" class="btn btn-warning mr-2 mb-2">
+                <i class="fas fa-edit mr-1"></i>Edit
+            </a>
+            <a href="{{ route('lahan.create', ['bumdes_id' => $bumdes->id]) }}" class="btn btn-success mb-2">
+                <i class="fas fa-plus mr-1"></i>Tambah Lahan
+            </a>
+        </div>
     </div>
     <div class="col-lg-7">
         <div class="card">
-            <div class="card-header card-header-porang">
-                <h3 class="card-title"><i class="fas fa-users mr-2"></i>Daftar Anggota BUMDes</h3>
+            <div class="card-header card-header-porang d-flex justify-content-between align-items-center">
+                <h3 class="card-title mb-0"><i class="fas fa-map mr-2"></i>Lahan Desa (Kelola BUMDes)</h3>
+                <span class="badge badge-light">{{ $bumdes->lahan->count() }} lahan</span>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
                         <thead class="bg-light">
                             <tr>
-                                <th>Nomor</th>
-                                <th>Nama</th>
-                                <th>Telepon</th>
+                                <th>Nama Lahan</th>
+                                <th>Luas</th>
+                                <th>Lokasi</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th>Tanaman</th>
+                                <th width="60">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($bumdes->anggota as $item)
+                            @forelse($bumdes->lahan as $item)
                                 <tr>
-                                    <td>{{ $item->nomor_anggota }}</td>
-                                    <td>{{ $item->nama_lengkap }}</td>
-                                    <td>{{ $item->telepon ?: '-' }}</td>
+                                    <td>{{ $item->nama_lahan }}</td>
+                                    <td>{{ number_format($item->luas_lahan, 2, ',', '.') }} {{ $item->satuan_luas }}</td>
+                                    <td>{{ $item->lokasi ?: '-' }}</td>
+                                    <td><span class="badge badge-{{ $item->aktif ? 'success' : 'secondary' }}">{{ $item->aktif ? 'Aktif' : 'Nonaktif' }}</span></td>
                                     <td>
-                                        <span class="badge badge-{{ $item->status === 'aktif' ? 'success' : ($item->status === 'pending' ? 'warning' : 'danger') }}">
-                                            {{ ucfirst($item->status) }}
-                                        </span>
+                                        @php $lastTanaman = $item->tanaman->first(); @endphp
+                                        @if($lastTanaman)
+                                            <span class="badge badge-{{ $lastTanaman->status_badge }}">{{ $lastTanaman->status_label }}</span>
+                                        @else
+                                            <span class="text-muted">-</span>
+                                        @endif
                                     </td>
-                                    <td><a href="{{ route('anggota.show', $item) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a></td>
+                                    <td>
+                                        <a href="{{ route('lahan.show', $item) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5" class="text-center text-muted py-4">Belum ada anggota terkait.</td></tr>
+                                <tr><td colspan="6" class="text-center text-muted py-4">Belum ada lahan yang dikelola.</td></tr>
                             @endforelse
                         </tbody>
                     </table>

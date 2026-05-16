@@ -71,6 +71,10 @@
             padding: 0 24px;
         }
 
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+        }
+
         /* ============================================================
            NAVBAR
         ============================================================ */
@@ -459,21 +463,21 @@
                         Bergabunglah, tumbuh bersama kami.
                     </p>
 
-                    <!-- Quick stats bar -->
+                    <!-- Quick info bar -->
                     <div class="hero-stats-bar">
                         <div class="hero-stat">
-                            <strong>1.200+</strong>
-                            <span data-i18n="hero_stat1">Petani Anggota</span>
+                            <strong>Rp 4.500</strong>
+                            <span data-i18n="hero_stat1">Harga/Kg Umbi</span>
                         </div>
                         <div class="hero-stat-div"></div>
                         <div class="hero-stat">
-                            <strong>15+</strong>
-                            <span data-i18n="hero_stat2">BUMDes Mitra</span>
+                            <strong>8 Negara</strong>
+                            <span data-i18n="hero_stat2">Tujuan Ekspor</span>
                         </div>
                         <div class="hero-stat-div"></div>
                         <div class="hero-stat">
-                            <strong>850 ton</strong>
-                            <span data-i18n="hero_stat3">Panen/Tahun</span>
+                            <strong>Terbuka</strong>
+                            <span data-i18n="hero_stat3">untuk Semua</span>
                         </div>
                     </div>
 
@@ -495,36 +499,33 @@
                         <!-- Main image -->
                         <div class="hero-img-main">
                             <img
-                                src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=700&q=80"
-                                alt="Petani Porang"
+                                src="{{ asset('images/petani_hero.png') }}"
+                                alt="Petani Porang Koperasi Barakat Pangan Banua"
                                 loading="eager"
-                                onerror="this.src='https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=700&q=80'"
+                                onerror="this.style.background='linear-gradient(135deg,#1a4d2e,#3a7d44)'"
                             >
-                            <div class="hero-img-overlay" onclick="document.getElementById('videoModal').style.display='flex'" style="cursor:pointer;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="1.5"/><polygon points="10 8 16 12 10 16 10 8" fill="white"/></svg>
-                                <span>Lihat Video</span>
-                            </div>
+
                         </div>
 
-                        <!-- Floating card: anggota -->
+                        <!-- Floating card: ekspor -->
                         <div class="float-card float-card-left">
                             <div class="float-card-icon" style="background:var(--yellow);">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                             </div>
                             <div>
-                                <strong data-i18n="float1_strong">1.200+ Petani</strong>
-                                <span data-i18n="float1_span">Aktif Bersama</span>
+                                <strong data-i18n="float1_strong">Ekspor Global</strong>
+                                <span data-i18n="float1_span">Komoditas Unggulan</span>
                             </div>
                         </div>
 
-                        <!-- Floating card: pasar -->
+                        <!-- Floating card: harga -->
                         <div class="float-card float-card-right">
                             <div class="float-card-icon" style="background:var(--green-light);">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
                             </div>
                             <div>
                                 <strong data-i18n="float2_strong">Harga Terjamin</strong>
-                                <span data-i18n="float2_span">Akses Pasar Luas</span>
+                                <span data-i18n="float2_span">Transparan &amp; Adil</span>
                             </div>
                         </div>
                     </div>
@@ -734,14 +735,14 @@
                 <!-- Left: Images collage -->
                 <div class="about-images" data-aos="fade-right">
                     <div class="about-img-main">
-                        <img src="https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=600&q=80"
-                             alt="Petani Porang"
-                             onerror="this.src='https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=600&q=80'">
+                        <img src="{{ asset('images/porang_harvest.png') }}"
+                             alt="Petani Porang - Kelompok Tani Koperasi Barakat Pangan Banua"
+                             onerror="this.style.background='linear-gradient(135deg,#1a4d2e,#3a7d44)'">
                     </div>
                     <div class="about-img-small">
-                        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&q=80"
-                             alt="Umbi Porang"
-                             onerror="this.src='https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=80'">
+                        <img src="{{ asset('images/porang_plant.png') }}"
+                             alt="Tanaman Porang Amorphophallus muelleri"
+                             onerror="this.style.background='linear-gradient(135deg,#3a7d44,#5a9e5a)'">
                     </div>
                     <div class="about-badge-years">
                         <strong>6+</strong>
@@ -811,57 +812,49 @@
             <div style="text-align:center;margin-bottom:56px;" data-aos="fade-up">
                 <div class="section-label" style="background:rgba(255,255,255,.12);color:var(--yellow);justify-content:center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                    <span data-i18n="stats_label">Data &amp; Statistik</span>
+                    <span data-i18n="stats_label">Potensi Pasar</span>
                 </div>
                 <h2 class="section-title" style="color:var(--white);">
-                    Angka yang <span style="color:var(--yellow);">Bicara</span> untuk Kami
+                    Porang: Komoditas <span style="color:var(--yellow);">Masa Depan Indonesia</span>
                 </h2>
-                <p style="color:rgba(255,255,255,.7);font-size:.97rem;line-height:1.8;max-width:500px;margin:0 auto;">
-                    Pencapaian nyata Koperasi Barakat Pangan Banua yang terus tumbuh setiap tahunnya
+                <p style="color:rgba(255,255,255,.7);font-size:.97rem;line-height:1.8;max-width:560px;margin:0 auto;">
+                    Data pasar &amp; harga nasional komoditas porang — peluang nyata yang bisa Anda manfaatkan bersama koperasi kami
                 </p>
             </div>
 
-            <!-- Counter cards -->
+            <!-- Market stat cards -->
             <div class="stats-grid" data-aos="fade-up" data-aos-delay="100">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    </div>
-                    <div class="stat-num" data-target="1247">0</div>
-                    <div class="stat-suffix" data-i18n="hero_stat1_unit">Petani</div>
-                    <div class="stat-label" data-i18n="stat1_label">Anggota Aktif</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    </div>
-                    <div class="stat-num" data-target="18">0</div>
-                    <div class="stat-suffix">BUMDes</div>
-                    <div class="stat-label" data-i18n="stat2_label">Mitra Desa</div>
-                </div>
                 <div class="stat-card">
                     <div class="stat-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 0 0-6.88 17.25"/><line x1="8" y1="12" x2="12" y2="8"/><line x1="12" y1="8" x2="16" y2="12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
                     </div>
-                    <div class="stat-num" data-target="856">0</div>
-                    <div class="stat-suffix">Ton</div>
-                    <div class="stat-label" data-i18n="stat3_label">Total Panen 2024</div>
+                    <div class="stat-num" data-target="4500">0</div>
+                    <div class="stat-suffix">Rp/Kg</div>
+                    <div class="stat-label">Harga Umbi Segar</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                     </div>
-                    <div class="stat-num" data-target="12">0</div>
-                    <div class="stat-suffix">Miliar</div>
-                    <div class="stat-label" data-i18n="stat4_label">Omzet Tahunan</div>
+                    <div class="stat-num" data-target="65000">0</div>
+                    <div class="stat-suffix">Rp/Kg</div>
+                    <div class="stat-label">Harga Tepung Konjak</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
                     </div>
                     <div class="stat-num" data-target="8">0</div>
-                    <div class="stat-suffix" data-i18n="stat5_unit">Negara</div>
-                    <div class="stat-label" data-i18n="stat5_label">Tujuan Ekspor</div>
+                    <div class="stat-suffix">Negara</div>
+                    <div class="stat-label">Tujuan Ekspor</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <div class="stat-num" data-target="856">0</div>
+                    <div class="stat-suffix">Ribu Ton</div>
+                    <div class="stat-label">Produksi Nasional 2024</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
@@ -869,7 +862,15 @@
                     </div>
                     <div class="stat-num" data-target="3420">0</div>
                     <div class="stat-suffix">Ha</div>
-                    <div class="stat-label" data-i18n="stat6_label">Total Lahan</div>
+                    <div class="stat-label">Lahan Porang Nasional</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <div class="stat-num" data-target="2030">0</div>
+                    <div class="stat-suffix">Target</div>
+                    <div class="stat-label">Ekspansi Pasar Global</div>
                 </div>
             </div>
 
@@ -889,7 +890,9 @@
                         <span data-i18n="chart2_title">Distribusi Produk Porang</span>
                     </h3>
                     <p style="color:var(--text-light);font-size:.82rem;margin-bottom:20px;">Berdasarkan jenis olahan</p>
-                    <canvas id="productChart" height="100"></canvas>
+                    <div style="max-height:280px;position:relative;">
+                        <canvas id="productChart" height="100"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -957,7 +960,7 @@
         /* Stat cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 16px;
             margin-bottom: 48px;
         }
@@ -992,6 +995,7 @@
             display: grid;
             grid-template-columns: 3fr 2fr;
             gap: 24px;
+            min-width: 0;
         }
 
         .chart-card {
@@ -999,11 +1003,17 @@
             border-radius: var(--radius-md);
             padding: 28px;
             box-shadow: var(--shadow-md);
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .chart-card canvas {
+            max-width: 100% !important;
         }
 
         /* Responsive */
-        @media (max-width: 1100px) {
-            .stats-grid { grid-template-columns: repeat(3,1fr); }
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (max-width: 900px) {
@@ -1011,10 +1021,13 @@
             .about-img-small { display: none; }
             .about-badge-years { left: 16px; }
             .chart-area { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
         }
 
         @media (max-width: 600px) {
-            .stats-grid { grid-template-columns: repeat(2,1fr); }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .chart-area { grid-template-columns: 1fr; gap: 16px; }
+            .chart-card { padding: 18px 14px; }
         }
     </style>
     <!-- ============================================================
@@ -1039,9 +1052,8 @@
                 <!-- Layanan 1 -->
                 <div class="layanan-card" data-aos="fade-up" data-aos-delay="0">
                     <div class="layanan-img">
-                        <img src="https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=600&q=80"
-                             alt="Pendampingan Budidaya"
-                             onerror="this.src='https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&q=80'">
+                        <img src="{{ asset('images/porang_budidaya.png') }}"
+                             alt="Pendampingan Budidaya Porang">
                     </div>
                     <div class="layanan-body">
                         <div class="layanan-icon" style="background:var(--green-pale);color:var(--green);">
@@ -1069,9 +1081,8 @@
                 <!-- Layanan 2 -->
                 <div class="layanan-card" data-aos="fade-up" data-aos-delay="80">
                     <div class="layanan-img">
-                        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80"
-                             alt="Akses Pasar"
-                             onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80'">
+                        <img src="{{ asset('images/porang_pasar.png') }}"
+                             alt="Akses Pasar Porang">
                     </div>
                     <div class="layanan-body">
                         <div class="layanan-icon" style="background:var(--yellow-pale);color:var(--yellow-dark);">
@@ -1099,9 +1110,8 @@
                 <!-- Layanan 3 -->
                 <div class="layanan-card" data-aos="fade-up" data-aos-delay="160">
                     <div class="layanan-img">
-                        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=600&q=80"
-                             alt="Layanan Keuangan"
-                             onerror="this.src='https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?w=600&q=80'">
+                        <img src="{{ asset('images/porang_keuangan.png') }}"
+                             alt="Simpan Pinjam Koperasi Porang">
                     </div>
                     <div class="layanan-body">
                         <div class="layanan-icon" style="background:var(--brown-pale);color:var(--brown);">
@@ -1129,9 +1139,8 @@
                 <!-- Layanan 4 -->
                 <div class="layanan-card" data-aos="fade-up" data-aos-delay="240">
                     <div class="layanan-img">
-                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80"
-                             alt="Pelatihan Petani"
-                             onerror="this.src='https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=600&q=80'">
+                        <img src="{{ asset('images/porang_pelatihan.png') }}"
+                             alt="Pelatihan Petani Porang">
                     </div>
                     <div class="layanan-body">
                         <div class="layanan-icon" style="background:var(--green-pale);color:var(--green-mid);">
@@ -1274,7 +1283,7 @@
             <div style="text-align:center;margin-bottom:56px;" data-aos="fade-up">
                 <div class="section-label" style="justify-content:center;background:rgba(107,58,42,.1);color:var(--brown);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                    Galeri &amp; Video
+                    Galeri Kegiatan
                 </div>
                 <h2 class="section-title">
                     Kehidupan Nyata <span>Petani Porang Kami</span>
@@ -1287,103 +1296,49 @@
             <!-- Photo masonry grid -->
             <div class="gallery-grid" data-aos="fade-up">
                 <div class="gallery-item gallery-large">
-                    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80"
-                         alt="Petani di ladang porang"
-                         onerror="this.src='https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=800&q=80'">
+                    <img src="{{ asset('images/porang_harvest.png') }}"
+                         alt="Kelompok Petani Memanen Porang">
                     <div class="gallery-caption">Petani Anggota di Lahan Porang</div>
                 </div>
 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=80"
-                         alt="Ladang porang hijau"
-                         onerror="this.src='https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80'">
+                    <img src="{{ asset('images/galeri_lahan.png') }}"
+                         alt="Kebun Porang Hijau">
                     <div class="gallery-caption">Kebun Porang Anggota</div>
                 </div>
 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=400&q=80"
-                         alt="Umbi porang segar"
-                         onerror="this.src='https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80'">
+                    <img src="{{ asset('images/galeri_umbi.png') }}"
+                         alt="Umbi Porang Siap Panen">
                     <div class="gallery-caption">Umbi Porang Siap Panen</div>
                 </div>
 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=400&q=80"
-                         alt="Lahan pertanian subur"
-                         onerror="this.src='https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=400&q=80'">
-                    <div class="gallery-caption">Lahan Subur Anggota</div>
+                    <img src="{{ asset('images/porang_plant.png') }}"
+                         alt="Tanaman Porang Amorphophallus muelleri">
+                    <div class="gallery-caption">Tanaman Porang Unggul</div>
                 </div>
 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&q=80"
-                         alt="Rapat dan pelatihan"
-                         onerror="this.src='https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80'">
+                    <img src="{{ asset('images/porang_pelatihan.png') }}"
+                         alt="Pelatihan Budidaya Porang">
                     <div class="gallery-caption">Pelatihan Anggota</div>
                 </div>
 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80"
-                         alt="Panen porang"
-                         onerror="this.src='https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=400&q=80'">
-                    <div class="gallery-caption">Musim Panen Raya</div>
+                    <img src="{{ asset('images/petani_hero.png') }}"
+                         alt="Petani Porang Indonesia">
+                    <div class="gallery-caption">Petani Porang Bersemangat</div>
                 </div>
 
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=400&q=80"
-                         alt="Rapat anggota koperasi"
-                         onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=400&q=80'">
+                    <img src="{{ asset('images/galeri_rapat.png') }}"
+                         alt="Rapat Anggota Koperasi">
                     <div class="gallery-caption">Rapat Anggota Tahunan</div>
                 </div>
             </div>
 
-            <!-- Video section -->
-            <div class="video-section" data-aos="fade-up" data-aos-delay="100">
-                <div class="video-content">
-                    <div class="section-label" style="background:rgba(107,58,42,.1);color:var(--brown);">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-                        Video Profil
-                    </div>
-                    <h3 style="font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:800;color:var(--green-dark);margin-bottom:16px;line-height:1.3;">
-                        Mengenal Lebih Dekat<br><span style="color:var(--yellow-dark);">Koperasi Barakat Pangan Banua</span>
-                    </h3>
-                    <p style="color:var(--text-mid);font-size:.95rem;line-height:1.8;margin-bottom:28px;">
-                        Saksikan kehidupan nyata petani porang anggota koperasi kami — dari menanam bibit,
-                        merawat lahan, hingga panen dan mendapatkan hasil yang layak melalui jaringan koperasi.
-                    </p>
-                    <div class="video-highlights">
-                        <div class="video-highlight">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            Cara budidaya porang yang benar
-                        </div>
-                        <div class="video-highlight">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            Peran koperasi dalam mendampingi petani
-                        </div>
-                        <div class="video-highlight">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            Testimoni petani sukses bersama koperasi
-                        </div>
-                    </div>
-                </div>
 
-                <div class="video-embed-wrap">
-                    <div class="video-embed-container">
-                        <!-- YouTube embed: ganti URL dengan video porang yang sesuai -->
-                        <iframe
-                            src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1"
-                            title="Video Profil Koperasi Barakat Pangan Banua"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                            loading="lazy">
-                        </iframe>
-                    </div>
-                    <div class="video-play-note">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#ff0000"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
-                        Klik untuk memutar video profil
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -1559,54 +1514,27 @@
             <div style="text-align:center;margin-bottom:48px;" data-aos="fade-up">
                 <div class="section-label" style="justify-content:center;background:rgba(107,58,42,.08);color:var(--brown);">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                    <span data-i18n="partners_label">Mitra &amp; BUMDes</span>
+                    <span>Kemitraan</span>
                 </div>
-                <h2 class="section-title"><span data-i18n="partners_title">BUMDes <span>Mitra Kami</span></span></h2>
-                <p class="section-desc" style="margin:0 auto;text-align:center;" data-i18n="partners_desc">
-                    Bersinergi dengan BUMDes untuk pemerataan kesejahteraan di desa-desa penghasil porang
+                <h2 class="section-title">Terbuka untuk <span>Kemitraan</span></h2>
+                <p class="section-desc" style="margin:0 auto;text-align:center;">
+                    Kami terbuka untuk bersinergi dengan BUMDes, instansi pemerintah, dan lembaga pendukung petani porang
                 </p>
             </div>
 
-            <!-- BUMDes cards -->
-            <div class="partners-grid" data-aos="fade-up" data-aos-delay="80">
-                @php
-                    $bumdes = [
-                        ['name'=>'BUMDes Maju Bersama','village'=>'Desa Sumberejo, Madiun','members'=>87],
-                        ['name'=>'BUMDes Porang Jaya','village'=>'Desa Gemarang, Ngawi','members'=>124],
-                        ['name'=>'BUMDes Hijau Lestari','village'=>'Desa Bringin, Nganjuk','members'=>63],
-                        ['name'=>'BUMDes Mandiri Sejati','village'=>'Desa Pelem, Madiun','members'=>95],
-                        ['name'=>'BUMDes Tani Barokah','village'=>'Desa Kare, Madiun','members'=>78],
-                        ['name'=>'BUMDes Porang Mas','village'=>'Desa Saradan, Madiun','members'=>112],
-                    ];
-                @endphp
-                @foreach($bumdes as $b)
-                <div class="partner-card">
-                    <div class="partner-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    </div>
-                    <h4>{{ $b['name'] }}</h4>
-                    <p>{{ $b['village'] }}</p>
-                    <div class="partner-members">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        {{ $b['members'] }} <span data-i18n="member_word">Petani</span>
-                    </div>
+            <!-- Placeholder kemitraan -->
+            <div data-aos="fade-up" style="background:linear-gradient(135deg,var(--green-pale),var(--yellow-pale));border:2px dashed var(--green-mid);border-radius:var(--radius-lg);padding:60px 40px;text-align:center;">
+                <div style="width:72px;height:72px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:var(--shadow-sm);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 </div>
-                @endforeach
-            </div>
-
-            <!-- Logo strip -->
-            <div style="margin-top:56px;text-align:center;" data-aos="fade-up">
-                <p style="font-size:.82rem;color:var(--text-light);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:24px;" data-i18n="supported_by">
-                    Didukung &amp; Bermitra dengan
+                <h3 style="font-size:1.3rem;font-weight:700;color:var(--green-dark);margin-bottom:10px;">Segera Hadir</h3>
+                <p style="color:var(--text-mid);font-size:.95rem;max-width:440px;margin:0 auto 28px;line-height:1.75;">
+                    Koperasi kami sedang membangun jaringan kemitraan dengan BUMDes, instansi pemerintah, dan lembaga pendukung pertanian. Hubungi kami untuk informasi kemitraan.
                 </p>
-                <div class="logo-strip">
-                    <div class="logo-pill">Kementerian Pertanian RI</div>
-                    <div class="logo-pill">BUMD Jawa Timur</div>
-                    <div class="logo-pill">BRI Agriniaga</div>
-                    <div class="logo-pill">Universitas Brawijaya</div>
-                    <div class="logo-pill">Dinas Pertanian Madiun</div>
-                    <div class="logo-pill">Gabungan Kelompok Tani</div>
-                </div>
+                <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+                    Hubungi untuk Kemitraan
+                </a>
             </div>
         </div>
     </section>
@@ -1619,16 +1547,63 @@
             <div data-aos="fade-up" style="text-align:center;margin-bottom:60px;">
                 <div class="section-label" style="justify-content:center;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                    <span>Kelompok Tani</span>
+                    <span>Siapa yang Bisa Bergabung?</span>
                 </div>
-                <h2 class="section-title">Bergabung sebagai <span>Kelompok Tani</span></h2>
+                <h2 class="section-title">Terbuka untuk <span>Semua Anggota</span></h2>
                 <p class="section-desc" style="margin:0 auto;text-align:center;">
-                    Daftarkan kelompok tani Anda dan akses seluruh program pendampingan, pelatihan,
-                    serta jaringan pasar yang telah koperasi bangun untuk petani porang Indonesia.
+                    Koperasi kami menerima 3 jenis keanggotaan — Kelompok Tani, BUMDes, dan Petani Mandiri.
+                    Pilih sesuai kondisi Anda dan mulai perjalanan bersama kami.
                 </p>
             </div>
 
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;margin-bottom:60px;">
+            <!-- 3 Tipe Keanggotaan -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;margin-bottom:48px;">
+                <!-- Kelompok Tani -->
+                <div data-aos="fade-up" data-aos-delay="0" style="background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 8px 32px rgba(0,0,0,.08);border-top:4px solid var(--green-mid);">
+                    <div style="width:56px;height:56px;background:var(--green-pale);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div style="display:inline-block;background:var(--green-pale);color:var(--green-dark);font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:50px;margin-bottom:12px;">Kelompok Tani</div>
+                    <h4 style="font-size:1.1rem;font-weight:700;color:var(--green-dark);margin-bottom:10px;">Gabung Bersama Kelompok</h4>
+                    <p style="font-size:.88rem;color:var(--text-mid);line-height:1.7;margin-bottom:16px;">Untuk kelompok petani porang yang sudah terbentuk. Minimal 10 orang, bisa satu desa atau lintas dusun.</p>
+                    <ul style="font-size:.84rem;color:var(--text-mid);list-style:none;padding:0;margin-bottom:20px;display:flex;flex-direction:column;gap:7px;">
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Akses semua layanan koperasi</li>
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Pendampingan &amp; pelatihan gratis</li>
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Harga jual terjamin &amp; transparan</li>
+                    </ul>
+                    <a href="{{ route('daftar') }}" class="btn btn-primary" style="width:100%;justify-content:center;font-size:.9rem;padding:12px;">Daftar Kelompok Tani</a>
+                </div>
+                <!-- BUMDes -->
+                <div data-aos="fade-up" data-aos-delay="100" style="background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 8px 32px rgba(0,0,0,.08);border-top:4px solid var(--yellow);">
+                    <div style="width:56px;height:56px;background:var(--yellow-pale);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--yellow-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    </div>
+                    <div style="display:inline-block;background:var(--yellow-pale);color:var(--yellow-dark);font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:50px;margin-bottom:12px;">BUMDes</div>
+                    <h4 style="font-size:1.1rem;font-weight:700;color:var(--green-dark);margin-bottom:10px;">Kemitraan BUMDes</h4>
+                    <p style="font-size:.88rem;color:var(--text-mid);line-height:1.7;margin-bottom:16px;">Untuk Badan Usaha Milik Desa yang ingin bermitra dalam pengembangan komoditas porang di wilayahnya.</p>
+                    <ul style="font-size:.84rem;color:var(--text-mid);list-style:none;padding:0;margin-bottom:20px;display:flex;flex-direction:column;gap:7px;">
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Akses jaringan pasar koperasi</li>
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Pengembangan kapasitas desa</li>
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Pendampingan teknis &amp; bisnis</li>
+                    </ul>
+                    <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="btn btn-secondary" style="width:100%;justify-content:center;font-size:.9rem;padding:12px;">Hubungi via WhatsApp</a>
+                </div>
+                <!-- Petani Mandiri -->
+                <div data-aos="fade-up" data-aos-delay="200" style="background:#fff;border-radius:20px;padding:32px 28px;box-shadow:0 8px 32px rgba(0,0,0,.08);border-top:4px solid var(--green-light);">
+                    <div style="width:56px;height:56px;background:var(--green-pale);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                    <div style="display:inline-block;background:var(--green-pale);color:var(--green-mid);font-size:.72rem;font-weight:700;padding:4px 12px;border-radius:50px;margin-bottom:12px;">Petani Mandiri</div>
+                    <h4 style="font-size:1.1rem;font-weight:700;color:var(--green-dark);margin-bottom:10px;">Daftar Perorangan</h4>
+                    <p style="font-size:.88rem;color:var(--text-mid);line-height:1.7;margin-bottom:16px;">Untuk petani perorangan yang ingin langsung bergabung sebagai anggota koperasi, tanpa harus membentuk kelompok dulu.</p>
+                    <ul style="font-size:.84rem;color:var(--text-mid);list-style:none;padding:0;margin-bottom:20px;display:flex;flex-direction:column;gap:7px;">
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Cukup KTP &amp; data lahan</li>
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Akses layanan &amp; simpan pinjam</li>
+                        <li style="display:flex;gap:8px;align-items:center;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green-mid)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Gratis, proses 1–3 hari kerja</li>
+                    </ul>
+                    <a href="{{ route('daftar') }}" class="btn btn-primary" style="width:100%;justify-content:center;font-size:.9rem;padding:12px;background:linear-gradient(135deg,var(--green-light),var(--green-mid));">Daftar Petani Mandiri</a>
+                </div>
+            </div>
                 <!-- Card: Apa itu Kelompok Tani -->
                 <div data-aos="fade-up" data-aos-delay="0" style="
                     background:#fff;
@@ -2232,25 +2207,29 @@
             data: {
                 labels: ['2019','2020','2021','2022','2023','2024'],
                 datasets: [{
-                    label: 'Produksi (ton)',
+                    label: 'Produksi Nasional (ton)',
                     data: [120, 210, 380, 540, 720, 856],
                     borderColor: '#2d6a2d',
                     backgroundColor: 'rgba(45,106,45,.12)',
                     borderWidth: 3,
                     pointBackgroundColor: '#f5c518',
                     pointBorderColor: '#2d6a2d',
-                    pointRadius: 6,
-                    pointHoverRadius: 9,
+                    pointRadius: 5,
+                    pointHoverRadius: 8,
                     tension: .4,
                     fill: true
                 }]
             },
             options: {
                 responsive: true,
-                plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} ton` } } },
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { callbacks: { label: ctx => ` ${ctx.raw} ribu ton` } }
+                },
                 scales: {
-                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { size: 11 } } },
-                    x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,.06)' }, ticks: { font: { size: 10 }, maxTicksLimit: 6 } },
+                    x: { grid: { display: false }, ticks: { font: { size: 10 } } }
                 }
             }
         });
@@ -2274,15 +2253,15 @@
             nav_login:   'Masuk Sistem',
             // Hero
             hero_badge:    'Koperasi Resmi Terdaftar',
-            hero_stat1:    'Petani Anggota',
-            hero_stat2:    'BUMDes Mitra',
-            hero_stat3:    'Panen/Tahun',
+            hero_stat1:    'Harga/Kg Umbi',
+            hero_stat2:    'Tujuan Ekspor',
+            hero_stat3:    'untuk Semua',
             hero_btn1:     'Daftar Anggota',
             hero_btn2:     'Portal Anggota',
-            float1_strong: '1.200+ Petani',
-            float1_span:   'Aktif Bersama',
+            float1_strong: 'Ekspor Global',
+            float1_span:   'Komoditas Unggulan',
             float2_strong: 'Harga Terjamin',
-            float2_span:   'Akses Pasar Luas',
+            float2_span:   'Transparan & Adil',
             // About
             about_label: 'Tentang Kami',
             about_title: 'Bukan Pengolah — Tapi Kekuatan di Balik Petani Porang',
@@ -2292,9 +2271,9 @@
             v3: 'Terbuka untuk Semua',    v4: 'Berorientasi Petani',
             about_cta: 'Bergabung Sekarang',
             // Statistics
-            stats_label: 'Data & Statistik',
+            stats_label: 'Potensi Pasar',
             stats_title: 'Porang: Komoditas Masa Depan Indonesia',
-            stats_desc:  'Data nyata pertumbuhan industri porang nasional dan kinerja koperasi kami',
+            stats_desc:  'Data pasar & harga nasional komoditas porang — peluang nyata yang bisa Anda manfaatkan',
             chart1_title: 'Tren Produksi Porang Nasional (ton)',
             chart2_title: 'Segmen Pasar Produk Porang',
             hero_stat1_unit: 'Petani', stat1_label: 'Anggota Aktif',
@@ -2377,15 +2356,15 @@
             nav_login:   'Member Portal',
             // Hero
             hero_badge:    'Officially Registered Cooperative',
-            hero_stat1:    'Active Members',
-            hero_stat2:    'BUMDes Partners',
-            hero_stat3:    'Harvest/Year',
+            hero_stat1:    'Price/Kg Tuber',
+            hero_stat2:    'Export Markets',
+            hero_stat3:    'Open to All',
             hero_btn1:     'Become a Member',
             hero_btn2:     'Member Portal',
-            float1_strong: '1,200+ Farmers',
-            float1_span:   'Growing Together',
+            float1_strong: 'Global Export',
+            float1_span:   'Premium Commodity',
             float2_strong: 'Guaranteed Price',
-            float2_span:   'Wide Market Access',
+            float2_span:   'Transparent & Fair',
             // About
             about_label: 'About Us',
             about_title: 'Not a Processor — But the Strength Behind Porang Farmers',
@@ -2395,9 +2374,9 @@
             v3: 'Open to Everyone',           v4: 'Farmer-Oriented',
             about_cta: 'Join Now',
             // Statistics
-            stats_label: 'Data & Statistics',
+            stats_label: 'Market Potential',
             stats_title: 'Porang: Indonesia\'s Commodity of the Future',
-            stats_desc:  'Real data on national porang industry growth and our cooperative\'s performance',
+            stats_desc:  'National porang market & price data — real opportunities you can leverage with our cooperative',
             chart1_title: 'National Porang Production Trend (tons)',
             chart2_title: 'Porang Product Market Segments',
             hero_stat1_unit: 'Farmers', stat1_label: 'Active Members',

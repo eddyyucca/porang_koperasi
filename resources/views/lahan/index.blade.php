@@ -16,8 +16,8 @@
         <div id="map-lahan" style="height:300px;"></div>
     </div>
     <div class="card-footer bg-white text-sm">
-        <span class="badge badge-light border mr-2"><i class="fas fa-circle text-success mr-1"></i>Lahan pribadi petani</span>
-        <span class="badge badge-light border"><i class="fas fa-circle text-primary mr-1"></i>Lahan anggota BUMDes</span>
+        <span class="badge badge-light border mr-2"><i class="fas fa-circle text-primary mr-1"></i>Lahan Petani</span>
+        <span class="badge badge-light border"><i class="fas fa-circle text-success mr-1"></i>Lahan Desa (BUMDes)</span>
     </div>
 </div>
 
@@ -56,7 +56,7 @@
                 <thead class="bg-light">
                     <tr>
                         <th>Nama Lahan</th>
-                        <th>Petani</th>
+                        <th>Pemilik</th>
                         <th>Luas</th>
                         <th>Desa</th>
                         <th>Kabupaten</th>
@@ -70,9 +70,12 @@
                         <tr>
                             <td>{{ $item->nama_lahan }}</td>
                             <td>
-                                {{ $item->anggota->nama_lengkap ?? '-' }}
-                                @if(optional($item->anggota)->jenis_anggota === 'bumdes' && optional($item->anggota->bumdes)->nama)
-                                    <div><small class="text-muted">{{ $item->anggota->bumdes->nama }}</small></div>
+                                @if($item->pemilik_type === 'bumdes')
+                                    <span class="badge badge-success badge-sm">BUMDes</span>
+                                    <div>{{ $item->bumdes->nama ?? '-' }}</div>
+                                @else
+                                    <span class="badge badge-primary badge-sm">Petani</span>
+                                    <div>{{ $item->anggota->nama_lengkap ?? '-' }}</div>
                                 @endif
                             </td>
                             <td>{{ number_format($item->luas_lahan, 2, ',', '.') }} {{ $item->satuan_luas }}</td>
@@ -125,20 +128,19 @@ lahanMapData.forEach(function(item) {
         return;
     }
 
-    const isBumdes = item.anggota && item.anggota.jenis_anggota === 'bumdes';
+    const isBumdes = item.pemilik_type === 'bumdes';
+    const pemilikNama = isBumdes ? (item.bumdes ? item.bumdes.nama : '-') : (item.anggota ? item.anggota.nama_lengkap : '-');
     const marker = L.circleMarker([item.latitude, item.longitude], {
         radius: isBumdes ? 10 : 8,
-        color: isBumdes ? '#0d6efd' : '#2e7d32',
+        color: isBumdes ? '#2e7d32' : '#0d6efd',
         weight: 2,
-        fillColor: isBumdes ? '#5aa2ff' : '#6cc070',
+        fillColor: isBumdes ? '#6cc070' : '#5aa2ff',
         fillOpacity: 0.9
     }).addTo(lahanMap);
     bounds.push([item.latitude, item.longitude]);
     marker.bindPopup(
         '<strong>' + item.nama_lahan + '</strong><br>' +
-        'Petani: ' + (item.anggota ? item.anggota.nama_lengkap : '-') + '<br>' +
-        'Jenis: ' + (isBumdes ? 'BUMDes' : 'Pribadi') + '<br>' +
-        (isBumdes && item.anggota && item.anggota.bumdes ? 'BUMDes: ' + item.anggota.bumdes.nama + '<br>' : '') +
+        (isBumdes ? 'BUMDes: ' : 'Petani: ') + pemilikNama + '<br>' +
         'Kabupaten: ' + (item.kabupaten_nama || '-') + '<br>' +
         'Luas: ' + Number(item.luas_lahan).toLocaleString('id-ID') + ' ' + item.satuan_luas + '<br>' +
         '<a href="' + lahanShowBaseUrl + '/' + item.id + '" class="btn btn-xs btn-success mt-2">Detail</a>'

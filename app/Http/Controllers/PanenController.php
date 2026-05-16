@@ -23,10 +23,6 @@ class PanenController extends Controller
             $query->whereHas('anggota', fn($q) => $q->where('nama_lengkap', 'like', "%$s%"));
         }
 
-        if ($request->filled('kualitas')) {
-            $query->where('kualitas', $request->kualitas);
-        }
-
         if ($request->filled('metode')) {
             $query->where('metode_jual', $request->metode);
         }
@@ -145,7 +141,6 @@ class PanenController extends Controller
             'tanaman_id'    => 'required|exists:tanaman,id',
             'tanggal_panen' => 'required|date',
             'berat_panen_kg'=> 'required|numeric|min:0.1',
-            'kualitas'      => 'required|in:Grade A,Grade B,Grade C',
             'harga_per_kg'  => 'nullable|numeric|min:0',
             'metode_jual'   => 'required',
             'foto'          => 'nullable|image|max:2048',

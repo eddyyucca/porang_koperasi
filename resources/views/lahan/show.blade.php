@@ -31,13 +31,29 @@
         <div class="card mb-3">
             <div class="card-header card-header-porang"><h3 class="card-title">Pemilik</h3></div>
             <div class="card-body">
-                <div class="mb-2"><small class="text-muted d-block">Nama</small><a href="{{ route('anggota.show', $lahan->anggota) }}"><strong>{{ $lahan->anggota->nama_lengkap }}</strong></a></div>
-                <div><small class="text-muted d-block">Nomor Anggota</small><strong>{{ $lahan->anggota->nomor_anggota }}</strong></div>
+                @if($lahan->pemilik_type === 'bumdes' && $lahan->bumdes)
+                    <div class="mb-2">
+                        <span class="badge badge-success mb-1">Lahan Desa / BUMDes</span>
+                    </div>
+                    <div class="mb-2"><small class="text-muted d-block">BUMDes</small><a href="{{ route('bumdes.show', $lahan->bumdes) }}"><strong>{{ $lahan->bumdes->nama }}</strong></a></div>
+                    <div><small class="text-muted d-block">Desa</small><strong>{{ $lahan->bumdes->desa_nama ?: '-' }}</strong></div>
+                @else
+                    <div class="mb-2">
+                        <span class="badge badge-primary mb-1">Petani / Anggota</span>
+                    </div>
+                    <div class="mb-2"><small class="text-muted d-block">Nama</small><a href="{{ route('anggota.show', $lahan->anggota) }}"><strong>{{ $lahan->anggota->nama_lengkap }}</strong></a></div>
+                    <div><small class="text-muted d-block">Nomor Anggota</small><strong>{{ $lahan->anggota->nomor_anggota }}</strong></div>
+                @endif
             </div>
         </div>
 
         <div class="d-flex flex-wrap mb-3">
-            <a href="{{ route('tanaman.create', ['anggota_id' => $lahan->anggota_id, 'lahan_id' => $lahan->id]) }}" class="btn btn-success mr-2 mb-2">
+            @php
+                $tanamanCreateParams = $lahan->pemilik_type === 'bumdes'
+                    ? ['lahan_id' => $lahan->id]
+                    : ['anggota_id' => $lahan->anggota_id, 'lahan_id' => $lahan->id];
+            @endphp
+            <a href="{{ route('tanaman.create', $tanamanCreateParams) }}" class="btn btn-success mr-2 mb-2">
                 <i class="fas fa-plus mr-1"></i>Tambah Tanaman
             </a>
             <a href="{{ route('lahan.edit', $lahan) }}" class="btn btn-warning mr-2 mb-2">
@@ -115,7 +131,6 @@
                                 <tr>
                                     <td>{{ optional($panen->tanggal_panen)->format('d/m/Y') }}</td>
                                     <td>{{ number_format($panen->berat_panen_kg, 2, ',', '.') }} kg</td>
-                                    <td><span class="badge badge-{{ $panen->kualitas_badge }}">{{ $panen->kualitas }}</span></td>
                                     <td>Rp {{ number_format($panen->total_nilai ?? 0, 0, ',', '.') }}</td>
                                     <td><a href="{{ route('panen.show', $panen) }}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a></td>
                                 </tr>

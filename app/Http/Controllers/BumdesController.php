@@ -9,7 +9,7 @@ class BumdesController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Bumdes::withCount('anggota');
+        $query = Bumdes::withCount('lahan');
 
         if ($request->filled('search')) {
             $s = $request->search;
@@ -38,7 +38,7 @@ class BumdesController extends Controller
 
     public function show(Bumdes $bumdes)
     {
-        $bumdes->load(['anggota' => fn($q) => $q->latest()->limit(10)]);
+        $bumdes->load(['lahan' => fn($q) => $q->with(['tanaman' => fn($q2) => $q2->latest()->limit(1)])->latest()->limit(10)]);
         return view('bumdes.show', compact('bumdes'));
     }
 

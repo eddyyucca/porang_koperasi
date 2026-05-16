@@ -16,9 +16,25 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-md-6 mb-3">
+            {{-- Pemilik Type Toggle --}}
+            <div class="col-12 mb-3">
+                <label class="font-weight-bold d-block">Jenis Pemilik Lahan</label>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-primary {{ $defaultType === 'petani' ? 'active' : '' }}" id="btn-petani">
+                        <input type="radio" name="pemilik_type" value="petani" {{ $defaultType === 'petani' ? 'checked' : '' }}>
+                        <i class="fas fa-user-alt mr-1"></i> Petani / Anggota
+                    </label>
+                    <label class="btn btn-outline-success {{ $defaultType === 'bumdes' ? 'active' : '' }}" id="btn-bumdes">
+                        <input type="radio" name="pemilik_type" value="bumdes" {{ $defaultType === 'bumdes' ? 'checked' : '' }}>
+                        <i class="fas fa-landmark mr-1"></i> Lahan Desa (BUMDes)
+                    </label>
+                </div>
+            </div>
+
+            {{-- Petani panel --}}
+            <div class="col-md-6 mb-3" id="panel-petani" style="{{ $defaultType === 'bumdes' ? 'display:none' : '' }}">
                 <label class="font-weight-bold">Petani / Anggota</label>
-                <select name="anggota_id" class="form-control" data-select2 required>
+                <select name="anggota_id" class="form-control" data-select2>
                     <option value="">-- Pilih Anggota --</option>
                     @foreach($anggota as $item)
                         <option value="{{ $item->id }}" {{ (string) old('anggota_id', optional($selectedAnggota)->id) === (string) $item->id ? 'selected' : '' }}>
@@ -27,6 +43,20 @@
                     @endforeach
                 </select>
             </div>
+
+            {{-- BUMDes panel --}}
+            <div class="col-md-6 mb-3" id="panel-bumdes" style="{{ $defaultType === 'petani' ? 'display:none' : '' }}">
+                <label class="font-weight-bold">BUMDes</label>
+                <select name="bumdes_id" class="form-control" data-select2>
+                    <option value="">-- Pilih BUMDes --</option>
+                    @foreach($bumdes as $item)
+                        <option value="{{ $item->id }}" {{ (string) old('bumdes_id', optional($selectedBumdes)->id) === (string) $item->id ? 'selected' : '' }}>
+                            {{ $item->nama }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
             <div class="col-md-6 mb-3">
                 <label class="font-weight-bold">Nama Lahan</label>
                 <input type="text" name="nama_lahan" class="form-control" value="{{ old('nama_lahan') }}" required>
@@ -133,19 +163,29 @@
 @push('scripts')
 @include('components.wilayah-script')
 <script>
+// Pemilik type toggle
+$('input[name="pemilik_type"]').on('change', function () {
+    const val = $(this).val();
+    if (val === 'petani') {
+        $('#panel-petani').show();
+        $('#panel-bumdes').hide();
+        $('select[name="bumdes_id"]').val('');
+    } else {
+        $('#panel-petani').hide();
+        $('#panel-bumdes').show();
+        $('select[name="anggota_id"]').val('');
+    }
+});
+
+// Map picker
 const mapPicker = L.map('map-picker').setView([-2.5, 118], 5);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(mapPicker);
-
 let pickerMarker = null;
 
 function setCoordinate(lat, lng) {
     $('#latitude').val(Number(lat).toFixed(8));
     $('#longitude').val(Number(lng).toFixed(8));
-
-    if (pickerMarker) {
-        mapPicker.removeLayer(pickerMarker);
-    }
-
+    if (pickerMarker) mapPicker.removeLayer(pickerMarker);
     pickerMarker = L.marker([lat, lng], { draggable: true }).addTo(mapPicker);
     pickerMarker.on('dragend', function(e) {
         const pos = e.target.getLatLng();
@@ -154,26 +194,18 @@ function setCoordinate(lat, lng) {
     });
 }
 
-mapPicker.on('click', function(e) {
-    setCoordinate(e.latlng.lat, e.latlng.lng);
-});
+mapPicker.on('click', function(e) { setCoordinate(e.latlng.lat, e.latlng.lng); });
 
 $('#resetKoordinat').on('click', function() {
     $('#latitude, #longitude').val('');
-    if (pickerMarker) {
-        mapPicker.removeLayer(pickerMarker);
-        pickerMarker = null;
-    }
+    if (pickerMarker) { mapPicker.removeLayer(pickerMarker); pickerMarker = null; }
     mapPicker.setView([-2.5, 118], 5);
 });
 
 $('#latitude, #longitude').on('change', function() {
     const lat = parseFloat($('#latitude').val());
     const lng = parseFloat($('#longitude').val());
-    if (!isNaN(lat) && !isNaN(lng)) {
-        setCoordinate(lat, lng);
-        mapPicker.setView([lat, lng], 13);
-    }
+    if (!isNaN(lat) && !isNaN(lng)) { setCoordinate(lat, lng); mapPicker.setView([lat, lng], 13); }
 });
 
 @if(old('latitude') && old('longitude'))

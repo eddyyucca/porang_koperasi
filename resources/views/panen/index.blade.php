@@ -51,15 +51,6 @@
         <form method="GET" class="row">
             <div class="col-md-3 mb-2"><label class="font-weight-bold">Cari Petani</label><input type="text" name="search" class="form-control" value="{{ request('search') }}"></div>
             <div class="col-md-2 mb-2">
-                <label class="font-weight-bold">Kualitas</label>
-                <select name="kualitas" class="form-control">
-                    <option value="">Semua</option>
-                    @foreach(['Grade A','Grade B','Grade C'] as $item)
-                        <option value="{{ $item }}" {{ request('kualitas') === $item ? 'selected' : '' }}>{{ $item }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2 mb-2">
                 <label class="font-weight-bold">Metode Jual</label>
                 <select name="metode" class="form-control">
                     <option value="">Semua</option>
@@ -91,7 +82,6 @@
                         <th>Lahan</th>
                         <th>Tgl Panen</th>
                         <th>Berat</th>
-                        <th>Kualitas</th>
                         <th>Harga/kg</th>
                         <th>Total Nilai</th>
                         <th>Metode Jual</th>
@@ -106,7 +96,6 @@
                             <td>{{ $item->lahan->nama_lahan ?? '-' }}</td>
                             <td>{{ optional($item->tanggal_panen)->format('d/m/Y') }}</td>
                             <td>{{ number_format($item->berat_panen_kg, 2, ',', '.') }} kg</td>
-                            <td><span class="badge badge-{{ $item->kualitas_badge }}">{{ $item->kualitas }}</span></td>
                             <td>Rp {{ number_format($item->harga_per_kg ?? 0, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($item->total_nilai ?? 0, 0, ',', '.') }}</td>
                             <td>{{ ucfirst($item->metode_jual) }}</td>
@@ -119,14 +108,14 @@
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="10" class="text-center text-muted py-4">Belum ada data panen.</td></tr>
+                        <tr><td colspan="9" class="text-center text-muted py-4">Belum ada data panen.</td></tr>
                     @endforelse
                 </tbody>
                 <tfoot class="bg-light">
                     <tr>
                         <th colspan="3" class="text-right">Total</th>
                         <th>{{ number_format($pageTotalKg, 2, ',', '.') }} kg</th>
-                        <th colspan="2"></th>
+                        <th></th>
                         <th>Rp {{ number_format($pageTotalNilai, 0, ',', '.') }}</th>
                         <th colspan="3"></th>
                     </tr>

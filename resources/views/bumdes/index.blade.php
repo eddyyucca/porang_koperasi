@@ -37,7 +37,7 @@
                         <th>Kecamatan</th>
                         <th>Desa</th>
                         <th>Direktur</th>
-                        <th>Jml Anggota</th>
+                        <th>Jml Lahan</th>
                         <th>Status</th>
                         <th width="140">Aksi</th>
                     </tr>
@@ -51,7 +51,7 @@
                             <td>{{ $item->kecamatan_nama ?: '-' }}</td>
                             <td>{{ $item->desa_nama ?: '-' }}</td>
                             <td>{{ $item->direktur ?: '-' }}</td>
-                            <td>{{ number_format($item->anggota_count) }}</td>
+                            <td>{{ number_format($item->lahan_count) }}</td>
                             <td>
                                 <span class="badge badge-{{ $item->aktif ? 'success' : 'danger' }}">{{ $item->aktif ? 'Aktif' : 'Nonaktif' }}</span>
                             </td>

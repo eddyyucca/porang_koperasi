@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Bumdes extends Model
 {
@@ -21,9 +22,9 @@ class Bumdes extends Model
         'aktif' => 'boolean',
     ];
 
-    public function anggota(): HasMany
+    public function lahan(): HasMany
     {
-        return $this->hasMany(Anggota::class);
+        return $this->hasMany(Lahan::class);
     }
 
     public function getLokasiAttribute(): string
